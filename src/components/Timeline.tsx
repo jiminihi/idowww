@@ -1,4 +1,4 @@
-import React from "react";
+
 import type { Resume } from "../types/resume";
 
 export function Timeline({ data }: { data: Resume["experience"] }) {

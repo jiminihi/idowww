@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 
 type Resume = {
   experience: { company: string; role: string; start: string; end?: string; summary?: string; stack?: string[]; achievements?: string[] }[];
