@@ -1,1 +1,23 @@
-﻿[]
+﻿[
+  {
+    "slug": "toastlab-inventory",
+    "title": "ToastLab – Inventory/FIFO",
+    "type": "dev",
+    "period": "2024.07–2025.11",
+    "roles": ["설계","백엔드","프론트"],
+    "stack": ["Spring Boot","JPA","MariaDB","React","TypeScript"],
+    "tags": ["ERP","Inventory","FIFO","UnitPrice"],
+    "summary": "HQ/Store 재고, 로트(FIFO), 단가 이력, 상태 자동갱신.",
+    "thumb": "/images/thumbs/toastlab-inventory.jpg",
+    "detail": {
+      "overview": "...",
+      "problem": "...",
+      "approach": "...",
+      "implementation": [
+        { "title": "FIFO", "desc": "...", "image": "/images/detail/fifo.png" }
+      ],
+      "result": "...",
+      "links": { "github": "", "demo": "" }
+    }
+  }
+]
