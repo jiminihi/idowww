@@ -9,7 +9,17 @@ function readSheet(wb, name) {
   return XLSX.utils.sheet_to_json(ws, { defval: "" });
 }
 
-const wb = XLSX.readFile(path.resolve("resume.xlsx"));
+// --- guard: if resume.xlsx is missing, write empty skeleton and exit ---
+const xlsxPath = path.resolve("resume.xlsx");
+if (!fs.existsSync(xlsxPath)) {
+  console.log("ℹ️ resume.xlsx not found — writing empty public/data/resume.json and skipping.");
+  const out = { experience: [], education: [], skills: [], highlights: [], generatedAt: new Date().toISOString() };
+  fs.mkdirSync(path.resolve("public/data"), { recursive: true });
+  fs.writeFileSync(path.resolve("public/data/resume.json"), JSON.stringify(out, null, 2), "utf8");
+  process.exit(0);
+}
+
+const wb = XLSX.readFile(xlsxPath);
 
 const exp = readSheet(wb, "Experience").map(r => ({
   company: r.company, role: r.role, start: r.start, end: r.end, location: r.location,
