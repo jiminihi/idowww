@@ -1,0 +1,10 @@
+/* global.css 일부 */
+.timeline { border-left: 2px solid #e5e7eb; padding-left: 16px; }
+.timeline-item { margin: 16px 0; position: relative; }
+.timeline-item::before { content: ""; position: absolute; left: -7px; top: 6px; width: 10px; height: 10px; border-radius: 9999px; background: #6b7280; }
+.timeline-head { display:flex; gap:8px; align-items:baseline; }
+.timeline-head .period { color:#6b7280; font-size:.9rem; margin-left:auto; }
+.stack { color:#374151; font-size:.9rem; margin-top:4px; }
+.bullets { margin:8px 0 0 16px; list-style: disc; }
+.skills { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+.skill-card { border:1px solid #e5e7eb; border-radius:12px; padding:12px; }

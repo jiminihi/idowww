@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "resume:build": "node scripts/convert-resume.cjs",
+    "predev": "npm run resume:build",
+    "prebuild": "npm run resume:build"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -26,6 +29,7 @@
     "globals": "^16.5.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "xlsx": "^0.18.5"
   }
 }
