@@ -1,3 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 폰트(선택) */
+@font-face {
+  font-family: 'Pretendard Variable';
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
+html { font-family: 'Pretendard Variable', sans-serif; }
+
+
+/* 기본 바디 톤 */
+html { font-family: var(--font-pretendard); }
+
+/* 전역 톤 */
+html { @apply text-text bg-base; }
+html.dark { @apply text-text-dark bg-base-dark; }
+
+.site-header {
+  @apply border-b border-neutral/30 bg-white/80 backdrop-blur
+}
+html.dark .site-header { @apply bg-secondary-dark/40; }
+.site-header__inner {
+  @apply max-w-7xl mx-auto h-16 flex items-center justify-between
+         px-4 md:px-6 lg:px-8;            /* ← lg에서 0으로 */
+}
+.site-logo { @apply text-h3 font-condor; }
+.site-nav { @apply flex items-center gap-6; }
+.site-nav__list { @apply flex gap-4; }
+.site-nav__link { @apply text-body hover:opacity-80; }
+.site-nav__item.is-active .site-nav__link { @apply underline decoration-neutral; }
+
+.site-footer { @apply border-t border-neutral/30; }
+.site-footer__inner { @apply max-w-7xl mx-auto px-4 py-8 text-sm text-neutral; }
+
+
+
+/* 카드 유틸: Projects 카드/상세 메타카드 공통 */
+.card {
+  @apply rounded-2xl border border-line bg-surface shadow-card transition;
+}
+.card-hover { @apply hover:shadow-card2; }
+html.dark .card    { @apply border-line-dark bg-surface-dark; }
+html.dark .card-hover { /* 그대로 */ }
+
+/* 선택(하이라이트) 카드 */
+.card--active {
+  @apply border-accent ring-1 ring-accent/20;
+}
+
+/* 칩(선택 버튼/태그) */
+.pill {
+  @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm
+         bg-[rgba(109,124,255,0.08)] text-accent border border-accent/20;
+}
+html.dark .pill { @apply bg-[rgba(142,162,255,0.12)] text-accent border-accent/25; }
+
+/* 버튼(선택) */
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2
+         border border-line bg-surface text-text transition;
+}
+.btn-primary {
+  @apply bg-accent text-white border-transparent hover:opacity-90;
+}
+
+/* 미세: 섹션 타이틀/보조 텍스트 톤 */
+.muted { @apply text-subtext; }
+
+
 /* global.css 일부 */
 .timeline { border-left: 2px solid #e5e7eb; padding-left: 16px; }
 .timeline-item { margin: 16px 0; position: relative; }
@@ -8,3 +83,151 @@
 .bullets { margin:8px 0 0 16px; list-style: disc; }
 .skills { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
 .skill-card { border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
+
+
+
+
+
+/* Header link underline animation (active & hover) */
+.header-link {
+  position: relative;
+}
+.header-link::after,
+.header-link--active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms ease;
+  opacity: 0.65;
+}
+.header-link:hover::after,
+.header-link--active::after {
+  transform: scaleX(1);
+}
+.site-nav__link.is-active { text-decoration: underline; }
+
+
+/* Reduced motion: no underline animation */
+@media (prefers-reduced-motion: reduce) {
+  .header-link::after,
+  .header-link--active::after {
+    transition: none;
+  }
+}
+
+
+/* 헤더 기본/다크 배경 */
+.site-header {
+  @apply border-b border-neutral/30 bg-white/80 backdrop-blur;
+}
+html.dark .site-header { @apply bg-secondary-dark/40; }
+
+/* 스크롤로 떠 있을 때(최상단 아닐 때) 약간 더 불투명 + 그림자 */
+.site-header--floating {
+  @apply bg-white/90 shadow-sm;
+}
+html.dark .site-header--floating {
+  @apply bg-secondary-dark/60 shadow-sm;
+}
+
+/* 내부 여백(네가 원하는 가터 유지) */
+.site-header__inner {
+  @apply max-w-7xl mx-auto h-16 flex items-center justify-between
+         px-4 md:px-6 lg:px-8;
+}
+
+
+
+
+
+.device-bleed{
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  max-width: 100vw;
+  overflow-x: clip;
+}
+@supports (width: 100svw){
+  .device-bleed{
+    width: 100svw;
+    margin-left: calc(50% - 50svw);
+    margin-right: calc(50% - 50svw);
+    max-width: 100svw;
+  }
+}
+
+
+
+
+
+
+/* ==== Portfolio Card (Light/Dark, Hover Spec) ==== */
+@layer components {
+  /* 카드 베이스: 패딩 제거(이미지 풀블리드용), 라운드/보더/호버는 기존 그대로 */
+  .card-portfolio {
+    background: rgb(255, 255, 255);
+    border: 2px solid rgb(243, 226, 230);
+    border-radius: 12px;
+    /* padding: 32px;  ← 제거 */
+    transition: 0.2s;
+    transform: translateY(0);
+    box-shadow: none;
+    position: relative;
+    overflow: hidden; /* 이미지 라운드 맞추기 */
+    cursor: default;
+  }
+  html.dark .card-portfolio {
+    background: rgb(37, 40, 54);
+    border-color: rgb(58, 61, 74);
+  }
+
+  /* 링크 컨텍스트에서만 호버 동작(목록 전용) */
+  a .card-portfolio { cursor: pointer; }
+  a:hover .card-portfolio {
+    background: rgb(243, 226, 230);
+    border-color: rgb(74, 84, 106);
+    transform: translateY(-4px);
+    box-shadow: rgba(74, 84, 106, 0.15) 0px 8px 16px;
+  }
+  html.dark a:hover .card-portfolio {
+    background: rgb(74, 57, 68);
+    border-color: rgb(156, 169, 201);
+    transform: translateY(-4px);
+    box-shadow: rgba(74, 84, 106, 0.15) 0px 8px 16px;
+  }
+
+  /* 미디어(이미지) 엣지-투-엣지 + 확대(링크 컨텍스트에서만) */
+  .card-portfolio .card-media { width: 100%; aspect-ratio: 16 / 9; }
+  .card-portfolio .card-media img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform .7s;
+    display: block;
+  }
+  a:hover .card-portfolio .card-media img { transform: scale(1.05); }
+
+  /* 내부 텍스트 패딩 분리 */
+  .card-body { padding: 32px; }             /* 기본: 목록 */
+  .card--detail .card-body { padding: 24px; }/* 상세 전용: 24px */
+}
+
+
+
+@layer components {
+  .tag-chip {
+    background: rgb(74, 84, 106);
+    color: rgb(255, 255, 255);
+    border-radius: 9999px;
+    padding: 4px 8px;         /* ≒ px-2 py-1 */
+    font-size: 12px;          /* text-xs */
+    line-height: 1;           /* 높이 타이트 */
+    white-space: nowrap;      /* 한 줄 유지 */
+  }
+  html.dark .tag-chip {
+    background: rgb(156, 169, 201);
+    color: rgb(26, 29, 40);
+  }
+}
