@@ -36,7 +36,7 @@ html.dark .site-header { @apply bg-secondary-dark/40; }
 .site-nav__item.is-active .site-nav__link { @apply underline decoration-neutral; }
 
 .site-footer { @apply border-t border-neutral/30; }
-.site-footer__inner { @apply max-w-7xl mx-auto px-4 py-8 text-sm text-neutral; }
+.site-footer__inner { @apply max-w-7xl mx-auto px-4 py-8 text-xs text-neutral; }
 
 
 
@@ -83,8 +83,6 @@ html.dark .pill { @apply bg-[rgba(142,162,255,0.12)] text-accent border-accent/2
 .bullets { margin:8px 0 0 16px; list-style: disc; }
 .skills { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
 .skill-card { border:1px solid #e5e7eb; border-radius:12px; padding:12px; }
-
-
 
 
 
@@ -162,10 +160,7 @@ html.dark .site-header--floating {
 }
 
 
-
-
-
-
+/* 카드 */
 /* ==== Portfolio Card (Light/Dark, Hover Spec) ==== */
 @layer components {
   /* 카드 베이스: 패딩 제거(이미지 풀블리드용), 라운드/보더/호버는 기존 그대로 */
@@ -214,8 +209,7 @@ html.dark .site-header--floating {
   .card--detail .card-body { padding: 24px; }/* 상세 전용: 24px */
 }
 
-
-
+/* 뱃지 */
 @layer components {
   .tag-chip {
     background: rgb(74, 84, 106);
