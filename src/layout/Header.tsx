@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import DarkToggle from "../components/DarkToggle";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import IdoWWWLogo from '../components/IdoWWWLogo';
 
 type NavItem = { to: string; label: string };
 const NAV: NavItem[] = [
@@ -23,7 +24,9 @@ export default function Header() {
     >
       <div className="site-header__inner">
         <h1 className="site-logo">
-          <Link to="/">IdoWWW</Link>
+          <Link to="/">
+            <IdoWWWLogo size="medium" mode="light" animated />
+          </Link>
         </h1>
 
         <nav id="nav" className="site-nav" aria-label="Primary">
@@ -44,7 +47,8 @@ export default function Header() {
             ))}
           </ul>
           
-          <DarkToggle />
+          {/* 런타임 환경 보정: 빌드/SSR 단계 보호 */}
+          {typeof window !== "undefined" ? <DarkToggle /> : null}
         </nav>
       </div>
     </header>
