@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Experience = {
   company: string;
@@ -34,29 +34,33 @@ export default function About() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
   // BASE_URL-safe: 서브경로 배포 대비
   const jsonUrl = useMemo(
     () => new URL("data/resume.json", import.meta.env.BASE_URL).toString(),
     []
   );
 
-  // 비동기 fetch 로직: 효과 안에서는 동기 setState 호출 금지
-  const fetchResume = async (signal?: AbortSignal) => {
-    try {
-      const r = await fetch(jsonUrl, { cache: "no-store", signal });
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      const data: Resume = await r.json();
-      setResume(data);
-      setError(null);
-     } catch (err: unknown) {
-      // AbortController로 취소된 요청은 에러로 노출하지 않음
-      if ((err as { name?: string })?.name !== "AbortError") {
-        setError(err instanceof Error ? err : new Error(String(err)));
+  // 비동기 fetch 로직
+  const fetchResume = useCallback(
+    async (signal?: AbortSignal) => {
+      try {
+        const r = await fetch(jsonUrl, { cache: "no-store", signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data: Resume = await r.json();
+        setResume(data);
+        setError(null);
+      } catch (err: unknown) {
+        // AbortController로 취소된 요청은 에러로 노출하지 않음
+        if ((err as { name?: string })?.name !== "AbortError") {
+          setError(err instanceof Error ? err : new Error(String(err)));
+        }
+      } finally {
+        setLoading(false);
       }
-  } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [jsonUrl]
+  );
 
   // 사용자 인터랙션(버튼)에서만 동기 setState 허용
   const retry = () => {
@@ -69,7 +73,7 @@ export default function About() {
     const ctrl = new AbortController();
     void fetchResume(ctrl.signal);
     return () => ctrl.abort();
-  }, []);
+  }, [fetchResume]);
 
   const sortedExp = useMemo(() => {
     if (!resume?.experience) return [];
@@ -136,7 +140,8 @@ export default function About() {
       <div className="mx-auto max-w-4xl py-16 px-4">
         <h1 className="mb-2 text-2xl font-semibold">About</h1>
         <p className="mb-6 text-sm text-neutral-600 dark:text-neutral-300">
-          표시할 데이터가 없습니다. <code>public/data/resume.json</code>을 확인한 뒤 다시 시도하세요.
+          표시할 데이터가 없습니다. <code>public/data/resume.json</code>을 확인한 뒤
+          다시 시도하세요.
         </p>
         <button
           onClick={retry}
@@ -211,7 +216,10 @@ export default function About() {
           <h2 className="mb-4 text-xl font-semibold">Experience</h2>
           <div className="space-y-4">
             {sortedExp.map((e, idx) => (
-              <article key={`${e.company}-${e.role}-${idx}`} className="rounded-2xl border p-6">
+              <article
+                key={`${e.company}-${e.role}-${idx}`}
+                className="rounded-2xl border p-6"
+              >
                 <header className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="text-lg font-medium">
                     {e.role} · <span className="font-normal">{e.company}</span>
@@ -222,7 +230,9 @@ export default function About() {
                   </span>
                 </header>
                 {e.location ? (
-                  <div className="mb-3 text-sm text-neutral-500">{e.location}</div>
+                  <div className="mb-3 text-sm text-neutral-500">
+                    {e.location}
+                  </div>
                 ) : null}
                 {e.summary ? (
                   <p className="mb-3 leading-relaxed whitespace-pre-line">
@@ -265,7 +275,9 @@ export default function About() {
                   {[e.degree, e.note].filter(Boolean).join(" · ")}
                 </div>
                 <div className="mt-1 text-sm text-neutral-500">
-                  {e.start || e.end ? `${e.start ?? ""}${e.end ? ` – ${e.end}` : ""}` : ""}
+                  {e.start || e.end
+                    ? `${e.start ?? ""}${e.end ? ` – ${e.end}` : ""}`
+                    : ""}
                 </div>
               </li>
             ))}

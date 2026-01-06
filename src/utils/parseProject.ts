@@ -44,17 +44,30 @@ function parseCsvList(raw?: string): string[] {
 }
 
 /**
+ * 시트의 플래그 문자열(Y / TRUE / 1 등)을 boolean 으로 변환.
+ */
+function parseBooleanFlag(raw?: string): boolean {
+  if (!raw) return false;
+  const v = raw.toString().trim().toLowerCase();
+  return v === "y" || v === "yes" || v === "true" || v === "1";
+}
+
+/**
  * RawProject → Project 변환 함수 (UI에서 쓰는 최종 구조).
  */
 export function parseProject(raw: RawProject): Project {
   return {
+    // 원본 필드 그대로 복사
     ...raw,
 
-    // 태그/포지션/URL 파싱 결과
+    // 태그/포지션/URL/어워드 파싱 결과
     parsedTags: parseCsvList(raw.tags),
     parsedPositions: parseCsvList(raw.positions),
     parsedUrls: parseUrls(raw.urls),
     parsedAwards: parseMultiline(raw.awards),
+
+    // featured 플래그
+    featured: parseBooleanFlag(raw.featured),
   };
 }
 

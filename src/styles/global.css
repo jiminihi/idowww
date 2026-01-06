@@ -2,20 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 폰트(선택) */
-@font-face {
-  font-family: 'Pretendard Variable';
-  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.woff2') format('woff2-variations');
-  font-weight: 45 920;
-  font-style: normal;
-  font-display: swap;
-}
-
-html { font-family: 'Pretendard Variable', sans-serif; }
-
 
 /* 기본 바디 톤 */
-html { font-family: var(--font-pretendard); }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
 
 /* 전역 톤 */
 html { @apply text-text bg-base; }

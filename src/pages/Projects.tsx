@@ -42,16 +42,16 @@ const IconTable = ({ className = "h-5 w-5" }: { className?: string }) => (
 const TAG_VISIBLE_LIMIT = 5;
 
 // 역할 토큰 → 표준 카테고리 매핑
-const CORE = new Set<RoleKey>(["Design", "Publishing", "Dev"]);
+const CORE = new Set<RoleKey>(["Design", "Publishing", "Development"]);
 function mapRoleTokenToCategory(token: string): RoleKey {
   const k = token.replace(/\s+/g, "").toLowerCase();
   if (k === "ui/uxdesign" || k === "uiuxdesign") return "Design";
   if (k === "webdesign" || k === "branddesign") return "Design";
-  if (k === "front-enddev" || k === "frontenddev" || k === "frontend" || k === "front-end") return "Dev";
+  if (k === "front-enddev" || k === "frontenddev" || k === "frontend" || k === "front-end") return "Development";
   if (k === "flash") return "Etc";
   if (k === "publishing" || k === "webpublishing") return "Publishing";
   if (k.includes("design")) return "Design";
-  if (k.includes("dev")) return "Dev";
+  if (k.includes("dev")) return "Development";
   if (k.includes("publish")) return "Publishing";
   return "Etc";
 }
@@ -107,7 +107,7 @@ export default function Projects() {
     const all = projects.length;
     const design = projects.filter((p) => hasRole(p.role, "Design")).length;
     const publishing = projects.filter((p) => hasRole(p.role, "Publishing")).length;
-    const dev = projects.filter((p) => hasRole(p.role, "Dev")).length;
+    const dev = projects.filter((p) => hasRole(p.role, "Development")).length;
     const etc = projects.filter((p) => hasRole(p.role, "Etc")).length;
     return { ALL: all, Design: design, Publishing: publishing, Dev: dev, Etc: etc } as const;
   }, [projects]);

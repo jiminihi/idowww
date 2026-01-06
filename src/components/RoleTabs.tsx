@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-export type RoleKey = "ALL" | "Design" | "Publishing" | "Dev" | "Etc";
+export type RoleKey = "ALL" | "Design" | "Publishing" | "Development" | "Etc";
 
 type Props = {
   value: RoleKey;
@@ -8,7 +8,7 @@ type Props = {
   counts?: Partial<Record<RoleKey, number>>;
 };
 
-const TABS: RoleKey[] = ["ALL", "Design", "Publishing", "Dev", "Etc"];
+const TABS: RoleKey[] = ["ALL", "Design", "Publishing", "Development", "Etc"];
 
 function RoleTabsBase({ value, onChange, counts }: Props) {
   return (
