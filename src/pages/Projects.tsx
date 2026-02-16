@@ -209,7 +209,7 @@ export default function Projects() {
                       {p.title}
                     </h2>
                     {p.impact && (
-                      <div className="text-sm text-primary/80 truncate" title={p.impact}>
+                      <div className="text-sm text-neutral-700 dark:text-neutral-200 truncate" title={p.impact}>
                         {p.impact}
                       </div>
                     )}

@@ -1,32 +1,4 @@
-## src\App.tsx
-
-```tsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./layout/Layout";
-import Home from "./pages/Home";
-import Projects from "./pages/Projects";
-import ProjectDetail from "./pages/ProjectDetail";
-import About from "./pages/About";
-import "./styles/global.css";
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<>Not Found</>}/>
-        </Routes>
-      </Layout>
-    </BrowserRouter>
-  );
-}
-```
-
-## src\App.css
+# `D:\idowww\src\App.css`
 
 ```css
 #root {
@@ -73,7 +45,35 @@ export default function App() {
 }
 ```
 
-## src\index.css
+# `D:\idowww\src\App.tsx`
+
+```typescript
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./layout/Layout";
+import Home from "./pages/Home";
+import Projects from "./pages/Projects";
+import ProjectDetail from "./pages/ProjectDetail";
+import About from "./pages/About";
+import "./styles/global.css";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<>Not Found</>} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  );
+}
+```
+
+# `D:\idowww\src\index.css`
 
 ```css
 :root {
@@ -122,7 +122,7 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color: 0.25s;
+  transition: border-color 0.25s;
 }
 button:hover {
   border-color: #646cff;
@@ -146,9 +146,9 @@ button:focus-visible {
 }
 ```
 
-## src\main.tsx
+# `D:\idowww\src\main.tsx`
 
-```tsx
+```typescript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -161,15 +161,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 ```
 
-## src\assets\react.svg
+# `D:\idowww\src\assets\react.svg`
 
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212 37.076-29.293c2.813-.98 5.757-1.905 8.812-2.773c3.204 10.42 7.406 21.315 12.477 32.332c-5.137 11.18-9.399 22.249-12.634 32.792a134.718 134.718 0 0 1-6.318-1.979Zm12.378-84.26c-4.811-24.587-1.616-43.134 6.425-47.789c8.564-4.958 27.502 2.111 47.463 19.835a144.318 144.318 0 0 1 3.841 3.545c-7.438 7.987-14.787 17.08-21.808 26.988c-12.04 1.116-23.565 2.908-34.161 5.309a160.342 160.342 0 0 1-1.76-7.887Zm110.427 27.268a347.8 347.8 0 0 0-7.785-12.803c8.168 1.033 15.994 2.404 23.343 4.08c-2.206 7.072-4.956 14.465-8.193 22.045a381.151 381.151 0 0 0-7.365-13.322Zm-45.032-43.861c5.044 5.465 10.096 11.566 15.065 18.186a322.04 322.04 0 0 0-30.257-.006c4.974-6.559 10.069-12.652 15.192-18.18ZM82.802 87.83a323.167 323.167 0 0 0-7.227 13.238c-3.184-7.553-5.909-14.98-8.134-22.152c7.304-1.634 15.093-2.97 23.209-3.984a321.524 321.524 0 0 0-7.848 12.897Zm8.081 65.352c-8.385-.936-16.291-2.203-23.593-3.793c2.26-7.3 5.045-14.885 8.298-22.6a321.187 321.187 0 0 0 7.257 13.246c2.594 4.48 5.28 8.868 8.038 13.147Zm37.542 31.03c-5.184-5.592-10.354-11.779-15.403-18.433c4.902.192 9.899.29 14.978.29c5.218 0 10.376-.117 15.453-.343c-4.985 6.774-10.018 12.97-15.028 18.486Zm52.198-57.817c3.422 7.8 6.306 15.345 8.596 22.52c-7.422 1.694-15.436 3.058-23.88 4.071a382.417 382.417 0 0 0 7.859-13.026a347.403 347.403 0 0 0 7.425-13.565Zm-16.898 8.101a358.557 358.557 0 0 1-12.281 19.815a329.4 329.4 0 0 1-23.444.823c-7.967 0-15.716-.248-23.178-.732a310.202 310.202 0 0 1-12.513-19.846h.001a307.41 307.41 0 0 1-10.923-20.627a310.278 310.278 0 0 1 10.89-20.637l-.001.001a307.318 307.318 0 0 1 12.413-19.761c7.613-.576 15.42-.876 23.31-.876H128c7.926 0 15.743.303 23.354.883a329.357 329.357 0 0 1 12.335 19.695a358.489 358.489 0 0 1 11.036 20.54a329.472 329.472 0 0 1-11 20.722Zm22.56-122.124c8.572 4.944 11.906 24.881 6.52 51.026c-.344 1.668-.73 3.367-1.15 5.09c-10.622-2.452-22.155-4.275-34.23-5.408c-7.034-10.017-14.323-19.124-21.64-27.008a160.789 160.789 0 0 1 5.888-5.4c18.9-16.447 36.564-22.941 44.612-18.3 lazım}"</path></svg>
-```
+```xml
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="35.93" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 228"><path fill="#00D8FF" d="M210.483 73.824a171.49 171.49 0 0 0-8.24-2.597c.465-1.9.893-3.777 1.273-5.621c6.238-30.281 2.16-54.676-11.769-62.708c-13.355-7.7-35.196.329-57.254 19.526a171.23 171.23 0 0 0-6.375 5.848a155.866 155.866 0 0 0-4.241-3.917C100.759 3.829 77.587-4.822 63.673 3.233C50.33 10.957 46.379 33.89 51.995 62.588a170.974 170.974 0 0 0 1.892 8.48c-3.28.932-6.445 1.924-9.474 2.98C17.309 83.498 0 98.307 0 113.668c0 15.865 18.582 31.778 46.812 41.427a145.52 145.52 0 0 0 6.921 2.165a167.467 167.467 0 0 0-2.01 9.138c-5.354 28.2-1.173 50.591 12.134 58.266c13.744 7.926 36.812-.22 59.273-19.855a145.567 145.567 0 0 0 5.342-4.923a168.064 168.064 0 0 0 6.92 6.314c21.758 18.722 43.246 26.282 56.54 18.586c13.731-7.949 18.194-32.003 12.4-61.268a145.016 145.016 0 0 0-1.535-6.842c1.62-.48 3.21-.974 4.76-1.488c29.348-9.723 48.443-25.443 48.443-41.52c0-15.417-17.868-30.326-45.517-39.844Zm-6.365 70.984c-1.4.463-2.836.91-4.3 1.345c-3.24-10.257-7.612-21.163-12.963-32.432c5.106-11 9.31-21.767 12.459-31.957c2.619.758 5.16 1.557 7.61 2.4c23.69 8.156 38.14 20.213 38.14 29.504c0 9.896-15.606 22.743-40.946 31.14Zm-10.514 20.834c2.562 12.94 2.927 24.64 1.23 33.787c-1.524 8.219-4.59 13.698-8.382 15.893c-8.067 4.67-25.32-1.4-43.927-17.412a156.726 156.726 0 0 1-6.437-5.87c7.214-7.889 14.423-17.06 21.459-27.246c12.376-1.098 24.068-2.894 34.671-5.345a134.17 134.17 0 0 1 1.386 6.193ZM87.276 214.515c-7.882 2.783-14.16 2.863-17.955.675c-8.075-4.657-11.432-22.636-6.853-46.752a156.923 156.923 0 0 1 1.869-8.499c10.486 2.32 22.093 3.988 34.498 4.994c7.084 9.967 14.501 19.128 21.976 27.15a134.668 134.668 0 0 1-4.877 4.492c-9.933 8.682-19.886 14.842-28.658 17.94ZM50.35 144.747c-12.483-4.267-22.792-9.812-29.858-15.863c-6.35-5.437-9.555-10.836-9.555-15.216c0-9.322 13.897-21.212... [truncated]"></svg>
 
-## src\components\AppLayout.tsx
+# `D:\idowww\src\components\AppLayout.tsx`
 
-```tsx
+```typescript
 import { Link, Outlet } from "react-router-dom";
 
 export default function AppLayout() {
@@ -191,71 +190,78 @@ export default function AppLayout() {
 }
 ```
 
-## src\components\DarkToggle.tsx
+# `D:\idowww\src\components\DarkToggle.tsx`
 
-```tsx
-// src/components/DarkToggle.tsx
-import { useEffect, useState } from "react";
+```typescript
+import { useCallback, useEffect, useState } from "react";
+import type React from "react";
 
-const hasDOM = typeof window !== "undefined" && typeof document !== "undefined";
+type Theme = "light" | "dark";
 
-function getInitialDark(): boolean {
-  if (!hasDOM) return false;
-  const saved = localStorage.getItem("theme");
-  if (saved === "dark") return true;
-  if (saved === "light") return false;
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+function getInitialTheme(): Theme {
+  // SSR/빌드 단계 보호
+  if (typeof window === "undefined") return "light";
+  try {
+    const cached = window.localStorage.getItem("theme");
+    if (cached === "light" || cached === "dark") return cached;
+  } catch {
+    // 로컬스토리지 접근 불가 시 무시
+  }
+  const prefersDark =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+  return prefersDark ? "dark" : "light";
 }
 
 export default function DarkToggle() {
-  const [dark, setDark] = useState<boolean>(getInitialDark);
+  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
 
-  // 초기 1회 동기화
+  // DOM 반영 + 저장 (의존성: theme)
   useEffect(() => {
-    if (!hasDOM) return;
-    document.documentElement.classList.toggle("dark", dark);
-  }, []); // 의도적 1회
-
-  // 상태 변경 시 동기화
-  useEffect(() => {
-    if (!hasDOM) return;
-    document.documentElement.classList.toggle("dark", dark);
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    // Tailwind dark 모드: html.classList에 dark 토글
+    root.classList.toggle("dark", theme === "dark");
     try {
-      localStorage.setItem("theme", dark ? "dark" : "light");
+      window.localStorage.setItem("theme", theme);
     } catch {
-      /* noop */
+      // 저장 실패는 무시
     }
-  }, [dark]);
+  }, [theme]);
+
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(() => {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }, []);
 
   return (
     <button
       type="button"
-      aria-pressed={dark}
-      aria-label={dark ? "라이트 모드로" : "다크 모드로"}
-      title={dark ? "라이트 모드로" : "다크 모드로"}
-      onClick={() => setDark(v => !v)}
-      className="
-        inline-flex h-6 w-6 items-center justify-center
-        rounded border border-neutral/40 bg-transparent
-        hover:bg-neutral/10 dark:hover:bg-primary-dark/30
-        focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40
-        transition
-      "
+      aria-label="Toggle dark mode"
+      onClick={onClick}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border bg-white/70 text-neutral-700 hover:bg-neutral/10 dark:bg-neutral-900/60 dark:text-neutral-200"
     >
-      {dark ? (
-        /* Sun (라이트로 전환 안내) */
-        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+      {theme === "dark" ? (
+        // Sun
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
           <path
-            fill="currentColor"
-            d="M12 18a6 6 0 1 0 0-12a6 6 0 0 0 0 12m0-16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1m0 18a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1m10-7a1 1 0 0 1-1 1h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1M4 12a1 1 0 0 1-1 1H2a1 1 0 1 1 0-2h1a1 1 0 0 1 1 1m14.95 6.536a1 1 0 0 1-1.414 0l-.707-.707a1 1 0 1 1 1.414-1.415l.707.708a1 1 0 0 1 0 1.414M6.171 6.171a1 1 0 0 1-1.414 0l-.707-.707A1 1 0 1 1 5.464 4.05l.707.707a1 1 0 0 1 0 1.414m12.021-1.414a1 1 0 0 1 0 1.414l-.707.707a1 1 0 0 1-1.414-1.414l.707-.707a1 1 0 0 1 1.414 0M6.171 19.95a1 1 0 0 1 0-1.414l.707-.707a1 1 0 1 1 1.414 1.414l-.707.707a1 1 0 0 1-1.414 0"
+            d="M12 4V2m0 20v-2M4.93 4.93 3.52 3.52m16.96 16.96-1.41-1.41M4 12H2m20 0h-2M4.93 19.07 3.52 20.48m16.96-16.96-1.41 1.41M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       ) : (
-        /* Moon (다크로 전환 안내) */
-        <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+        // Moon
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
           <path
-            fill="currentColor"
-            d="M21 12.79A9 9 0 1 1 11.21 3a.75.75 0 0 1 .92.92A7.5 7.5 0 1 0 21 12a.75.75 0 0 1 0 .79"
+            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       )}
@@ -264,12 +270,100 @@ export default function DarkToggle() {
 }
 ```
 
-## src\components\RoleTabs.tsx
+# `D:\idowww\src\components\IdoWWWLogo.tsx`
 
-```tsx
+```typescript
+import type { CSSProperties } from "react";
+
+type LogoSize = 'small' | 'medium' | 'large' | 'xlarge';
+type LogoMode = 'light' | 'dark';
+
+interface IdoWWWLogoProps {
+  size?: LogoSize;
+  mode?: LogoMode;
+  animated?: boolean;
+  className?: string;
+  style?: CSSProperties;
+}
+
+const IdoWWWLogo: React.FC<IdoWWWLogoProps> = ({ 
+  size = 'medium',
+  mode = 'light',
+  animated = true,
+  className = '',
+  style = {}
+}) => {
+  const sizes: Record<LogoSize, { box: number; icon: number; ido: number; www: number; gap: number }> = {
+    small: { box: 24, icon: 14, ido: 6, www: 16, gap: 6 },
+    medium: { box: 36, icon: 20, ido: 8, www: 26, gap: 9 },
+    large: { box: 48, icon: 28, ido: 11, www: 34, gap: 12 },
+    xlarge: { box: 64, icon: 36, ido: 14, www: 44, gap: 16 }
+  };
+
+  const colors: Record<LogoMode, { primary: string; neutral: string; bg: string }> = {
+    light: { primary: '#4a546a', neutral: '#9ca9c9', bg: '#ffffff' },
+    dark: { primary: '#9ca9c9', neutral: '#6a7590', bg: '#1a1d28' }
+  };
+
+  const s = sizes[size];
+  const c = colors[mode];
+  const wwwWidth = s.www * 3.5;
+  const totalWidth = s.box + s.gap + wwwWidth;
+  const textGap = s.ido * 0.1;
+  const textHeight = s.ido + textGap + s.www;
+  const totalHeight = Math.max(s.box, textHeight);
+
+  return (
+    <svg 
+      width={totalWidth} 
+      height={totalHeight} 
+      viewBox={`0 0 ${totalWidth} ${totalHeight}`}
+      className={className}
+      style={style}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {animated && (
+        <style>
+          {`
+            @keyframes idowww-blink {
+              0%, 49% { opacity: 1; }
+              50%, 99% { opacity: 0.3; }
+              100% { opacity: 1; }
+            }
+            .idowww-blink { animation: idowww-blink 1.2s ease-in-out infinite; }
+          `}
+        </style>
+      )}
+      <circle cx={s.box/2} cy={totalHeight/2} r={s.box/2} fill={c.primary} />
+      <text 
+        x={s.box/2} 
+        y={totalHeight/2 + s.icon/3} 
+        textAnchor="middle" 
+        fontFamily="system-ui, -apple-system, sans-serif" 
+        fontSize={s.icon} 
+        fontWeight="700" 
+        fill={c.bg}
+        className={animated ? 'idowww-blink' : ''}
+      >
+        I
+      </text>
+      <g transform={`translate(${s.box + s.gap}, ${totalHeight/2 - textHeight/4})`}>
+        <text x="0" y="0" fontFamily="system-ui" fontSize={s.ido} fontWeight="600" letterSpacing="-0.02em" fill={c.neutral}>Ido</text>
+        <text x="0" y={s.ido + s.www * 0.5} fontFamily="Georgia, serif" fontSize={s.www} fontWeight="700" fontStyle="italic" letterSpacing="0.05em" fill={c.primary}>WWW</text>
+      </g>
+    </svg>
+  );
+};
+
+export default IdoWWWLogo;
+```
+
+# `D:\idowww\src\components\RoleTabs.tsx`
+
+```typescript
 import { memo } from "react";
 
-export type RoleKey = "ALL" | "Design" | "Publishing" | "Dev" | "Etc";
+export type RoleKey = "ALL" | "Design" | "Publishing" | "Development" | "Etc";
 
 type Props = {
   value: RoleKey;
@@ -277,7 +371,7 @@ type Props = {
   counts?: Partial<Record<RoleKey, number>>;
 };
 
-const TABS: RoleKey[] = ["ALL", "Design", "Publishing", "Dev", "Etc"];
+const TABS: RoleKey[] = ["ALL", "Design", "Publishing", "Development", "Etc"];
 
 function RoleTabsBase({ value, onChange, counts }: Props) {
   return (
@@ -292,7 +386,7 @@ function RoleTabsBase({ value, onChange, counts }: Props) {
             type="button"
             onClick={() => onChange(tab)}
             aria-pressed={active}
-            className={[
+            className={[ 
               // 공통
               "px-5 py-2 rounded-full border-2 leading-none transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
@@ -321,9 +415,9 @@ function RoleTabsBase({ value, onChange, counts }: Props) {
 export const RoleTabs = memo(RoleTabsBase);
 ```
 
-## src\components\Timeline.tsx
+# `D:\idowww\src\components\Timeline.tsx`
 
-```tsx
+```typescript
 import type { Resume } from "../types/resume";
 
 export function Timeline({ data }: { data: Resume["experience"] }) {
@@ -349,9 +443,9 @@ export function Timeline({ data }: { data: Resume["experience"] }) {
 }
 ```
 
-## src\hooks\useScrollReveal.ts
+# `D:\idowww\src\hooks\useScrollReveal.ts`
 
-```ts
+```typescript
 import { useEffect, useRef, useState } from "react";
 
 export function useScrollReveal(delta = 8, topThreshold = 8) {
@@ -380,28 +474,29 @@ export function useScrollReveal(delta = 8, topThreshold = 8) {
 }
 ```
 
-## src\layout\Footer.tsx
+# `D:\idowww\src\layout\Footer.tsx`
 
-```tsx
+```typescript
 export default function Footer() {
   return (
     <footer className="site-footer">
-      {/* ▼ 네 푸터 마크업으로 교체 *\/
+      {/* ▼ 네 푸터 마크업으로 교체 *\/ 
       <div className="site-footer__inner">
         <p>© {new Date().getFullYear()} IdoWWW | Made with ❤️ and ☕</p>
       </div>
-      {/* ▲ *\/
+      {/* ▲ *\/ 
     </footer>
   );
 }
 ```
 
-## src\layout\Header.tsx
+# `D:\idowww\src\layout\Header.tsx`
 
-```tsx
+```typescript
 import { Link, NavLink } from "react-router-dom";
 import DarkToggle from "../components/DarkToggle";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import IdoWWWLogo from '../components/IdoWWWLogo';
 
 type NavItem = { to: string; label: string };
 const NAV: NavItem[] = [
@@ -424,7 +519,9 @@ export default function Header() {
     >
       <div className="site-header__inner">
         <h1 className="site-logo">
-          <Link to="/">IdoWWW</Link>
+          <Link to="/">
+            <IdoWWWLogo size="medium" mode="light" animated />
+          </Link>
         </h1>
 
         <nav id="nav" className="site-nav" aria-label="Primary">
@@ -445,7 +542,8 @@ export default function Header() {
             ))}
           </ul>
           
-          <DarkToggle />
+          {/* 런타임 환경 보정: 빌드/SSR 단계 보호 *\/ 
+          {typeof window !== "undefined" ? <DarkToggle /> : null}
         </nav>
       </div>
     </header>
@@ -453,40 +551,18 @@ export default function Header() {
 }
 ```
 
-## src\layout\Layout.tsx
+# `D:\idowww\src\lib\data.ts`
 
-```tsx
-import type { ReactNode } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-
-type LayoutProps = { children?: ReactNode };
-
-export default function Layout({ children }: LayoutProps) {
-  return (
-    <div className="min-h-dvh flex flex-col">
-      <Header />
-      {/* 고정 헤더 높이 보정 *\/
-      <div className="h-16" />
-      <main className="flex-1 overflow-x-clip">{children}</main>
-      <Footer />
-    </div>
-  );
-}
-```
-
-## src\lib\data.ts
-
-```ts
+```typescript
 export async function loadProjects(){
   const r = await fetch("/data/projects.json");
   return r.json();
 }
 ```
 
-## src\lib\types.ts
+# `D:\idowww\src\lib\types.ts`
 
-```ts
+```typescript
 export type ProjectType = "dev" | "design";
 export interface Project {
   slug: string; title: string; type: ProjectType;
@@ -500,94 +576,775 @@ export interface Project {
 }
 ```
 
-## src\pages\About.tsx
+# `D:\idowww\src\pages\About.tsx`
 
-```tsx
-import { useEffect, useState } from "react";
+```typescript
+import { useCallback, useEffect, useState, useMemo } from "react";
+import type { Resume } from "../types/resume";
 
-type Resume = {
-  experience: { company: string; role: string; start: string; end?: string; summary?: string; stack?: string[]; achievements?: string[] }[];
-  education: { school: string; degree?: string; start?: string; end?: string; note?: string }[];
-  skills: { category: string; items: string[] }[];
-};
+const PROFILE_PLACEHOLDER =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23f0f0f0' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='20'%3EProfile Image%3C/text%3E%3C/svg%3E";
 
 export default function About() {
   const [resume, setResume] = useState<Resume | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  // 필요하면 나중에 BASE_URL 대응용으로만 사용
+  const resumePath = useMemo(() => "/data/resume.json", []);
+
+  const fetchResume = useCallback(
+    async (signal?: AbortSignal) => {
+      try {
+        const r = await fetch(resumePath, { cache: "no-store", signal });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data: Resume = await r.json();
+        setResume(data);
+        setError(null);
+      } catch (err: unknown) {
+        if ((err as { name?: string })?.name !== "AbortError") {
+          setError(err instanceof Error ? err : new Error(String(err)));
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [resumePath]
+  );
+
+  const retry = () => {
+    setLoading(true);
+    setError(null);
+    void fetchResume();
+  };
 
   useEffect(() => {
-    fetch("/data/resume.json")
-      .then(r => r.json())
-      .then(setResume)
-      .catch(console.error);
-  }, []);
+    const ctrl = new AbortController();
+    void fetchResume(ctrl.signal);
+    return () => ctrl.abort();
+  }, [fetchResume]);
 
-  if (!resume) return <div>Loading…</div>;
+  const sortedExp = useMemo(() => {
+    if (!resume?.experience) return [];
+    const parse = (s?: string) => (s ? Date.parse(s) : 0);
+    return [...resume.experience].sort((a, b) => {
+      const ae = parse(a.end) || parse(a.start);
+      const be = parse(b.end) || parse(b.start);
+      return be - ae;
+    });
+  }, [resume]);
 
+  const formatPeriod = (start: string, end?: string) =>
+    end && end.trim() ? `${start} – ${end}` : `${start} – Present`;
+
+  // 로딩 상태
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+        <div className="mb-10 h-8 w-32 animate-pulse rounded bg-neutral/20" />
+        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
+          <div className="aspect-[4/5] w-full animate-pulse rounded-2xl bg-neutral/15" />
+          <div className="space-y-4">
+            <div className="h-7 w-40 animate-pulse rounded bg-neutral/20" />
+            <div className="h-4 w-48 animate-pulse rounded bg-neutral/15" />
+            <div className="h-3 w-32 animate-pulse rounded bg-neutral/10" />
+            <div className="mt-4 space-y-3">
+              <div className="h-4 w-full animate-pulse rounded bg-neutral/10" />
+              <div className="h-4 w-5/6 animate-pulse rounded bg-neutral/10" />
+              <div className="h-4 w-4/6 animate-pulse rounded bg-neutral/10" />
+            </div>
+            <div className="mt-6 h-10 w-40 animate-pulse rounded-full bg-neutral/15" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
+        <h1 className="mb-2 text-2xl font-semibold text-primary">About</h1>
+        <p className="mb-6 text-sm text-red-600">
+          데이터를 불러오는 중 오류가 발생했습니다. ({error.message})
+        </p>
+        <button
+          type="button"
+          onClick={retry}
+          className="rounded border bg-white px-4 py-2 text-sm transition hover:bg-neutral/10"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  }
+
+  // 데이터 없음
+  if (!resume) {
+    return (
+      <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
+        <h1 className="mb-2 text-2xl font-semibold text-primary">About</h1>
+        <p className="mb-6 text-sm text-neutral">
+          표시할 데이터가 없습니다. <code>public/data/resume.json</code>을
+          확인한 뒤 다시 시도하세요.
+        </p>
+        <button
+          type="button"
+          onClick={retry}
+          className="rounded border bg-white px-4 py-2 text-sm transition hover:bg-neutral/10"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  }
+
+  // ↓↓↓ 아래부터는 네가 첨부한 About 레이아웃 그대로 유지 ↓↓↓
   return (
-    <div className="container">
-      
-      <h1>About</h1>
+    <div className="bg-white text-primary dark:bg-neutral-950 dark:text-neutral-50">
+      <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+        {/* Profile Section */}
+        <section className="mb-16 grid gap-10 md:mb-24 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:items-start">
+          <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral/10">
+            <img
+              src={PROFILE_PLACEHOLDER}
+              alt="Profile"
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
 
-      {resume.experience?.length ? (
-        <section>
-          <h2>Experience</h2>
-          <ul>
-            {resume.experience.map((e, i) => (
-              <li key={i}>
-                <strong>{e.role}</strong> · {e.company} ({e.start}–{e.end || "Present"})
-                {e.summary && <div>{e.summary}</div>}
-              </li>
-            ))}
+          <div className="profile-content">
+            <h1 className="mb-2 text-[32px] font-light tracking-tight md:text-[40px]">
+              idoWWW
+            </h1>
+            <div className="mb-2 text-sm uppercase tracking-[0.18em] text-neutral">
+              UI/UX Designer &amp; Publishing
+            </div>
+            <div className="mb-8 text-xs font-medium text-neutral/80">
+              프리랜서 프로젝트 진행 가능
+            </div>
+
+            <div className="space-y-3 text-sm leading-relaxed text-primary/90 md:text-body">
+              <p>
+                서울을 기반으로 활동하는 UI/UX 디자이너이자 퍼블리셔로, 사려
+                깊은 디지털 경험을 만드는 데 집중하고 있습니다.
+              </p>
+              <p>
+                디자인과 개발을 모두 경험해본 덕분에, 시각적인 완성도와
+                인터랙션, 그리고 퍼포먼스를 함께 고려한 웹사이트와
+                애플리케이션을 만드는 일을 좋아합니다.
+              </p>
+              <p>
+                깔끔한 미학과 기능적 디자인의 접점을 탐색하면서, 항상 최종
+                사용자를 프로세스의 중심에 두는 것을 원칙으로 삼습니다.
+              </p>
+              <p>
+                창의성과 기술, 그리고 문제 해결에 대한 호기심이 만나는 지점에서
+                좋은 결과물이 나온다고 믿습니다.
+              </p>
+            </div>
+
+            {resume.highlights?.length ? (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {resume.highlights.map((h) => (
+                  <span key={h.slug} className="tag-chip">
+                    {h.title}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+
+            <div className="mt-8">
+              <a
+                href="/data/IdoWWW_Resume.pdf"
+                className="inline-block border border-primary px-8 py-3 text-sm transition-colors hover:bg-primary hover:text-white"
+              >
+                이력서 다운로드
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills Section */}
+        <section className="mb-16 rounded-3xl bg-neutral/5 px-6 py-12 md:mb-24 md:px-10 md:py-16">
+          <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
+            Skills &amp; Expertise
+          </h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            {resume.skills?.length
+              ? resume.skills.map((sg) => (
+                  <div key={sg.category}>
+                    <h3 className="mb-4 border-b border-primary/40 pb-3 text-sm font-semibold uppercase tracking-[0.14em] text-neutral">
+                      {sg.category}
+                    </h3>
+                    <ul className="space-y-2 text-sm leading-relaxed text-primary/90">
+                      {sg.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              : null}
+          </div>
+        </section>
+
+        {/* Experience Section */}
+        {sortedExp.length ? (
+          <section className="mb-16 md:mb-24">
+            <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
+              Experience
+            </h2>
+            <div className="space-y-10">
+              {sortedExp.map((e, idx) => (
+                <article
+                  key={`${e.company}-${e.role}-${idx}`}
+                  className="border-b border-neutral/20 pb-10 last:border-b-0 last:pb-0"
+                >
+                  <div className="grid gap-6 md:grid-cols-[160px_minmax(0,1fr)] md:gap-10">
+                    <div className="text-xs uppercase tracking-[0.16em] text-neutral">
+                      <div>{formatPeriod(e.start, e.end)}</div>
+                      {e.location && (
+                        <div className="mt-2 text-[11px] text-neutral/80">
+                          {e.location}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="mb-1 text-base font-semibold md:text-lg">
+                        {e.role}
+                      </h3>
+                      <div className="mb-4 text-sm text-neutral">
+                        {e.company}
+                        {e.location ? ` / ${e.location}` : ""}
+                      </div>
+
+                      {e.summary && (
+                        <p className="mb-3 whitespace-pre-line text-sm leading-relaxed text-primary/90">
+                          {e.summary}
+                        </p>
+                      )}
+
+                      {e.achievements?.length ? (
+                        <ul className="mb-3 space-y-1.5 text-sm leading-relaxed text-primary/90">
+                          {e.achievements.map((a, i) => (
+                            <li key={i} className="flex gap-2">
+                              <span className="mt-1 inline-block h-1 w-1 rounded-full bg-primary/70" />
+                              <span>{a}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {e.stack?.length ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {e.stack.map((s) => (
+                            <span key={s} className="tag-chip">
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* Education */}
+        {resume.education?.length ? (
+          <section className="mb-16 md:mb-24">
+            <h2 className="mb-6 text-[24px] font-semibold text-primary">
+              Education
+            </h2>
+            <ul className="space-y-4">
+              {resume.education.map((ed, i) => (
+                <li
+                  key={`${ed.school}-${i}`}
+                  className="rounded-2xl border border-neutral/20 px-5 py-4"
+                >
+                  <div className="text-sm font-semibold text-primary">
+                    {ed.school}
+                  </div>
+                  {(ed.degree || ed.note) && (
+                    <div className="mt-1 text-xs text-neutral">
+                      {[ed.degree, ed.note].filter(Boolean).join(" · ")}
+                    </div>
+                  )}
+                  {(ed.start || ed.end) && (
+                    <div className="mt-1 text-xs text-neutral/80">
+                      {ed.start ?? ""} 
+                      {ed.end ? `– ${ed.end}` : ed.start ? "–" : ""}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {/* Services Section */}
+        <section className="mb-16 rounded-3xl bg-neutral/5 px-6 py-12 md:mb-24 md:px-10 md:py-16">
+          <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
+            What I Do
+          </h2>
+
+          <div className="space-y-10">
+            <div className="service-item">
+              <h3 className="mb-3 text-xl font-medium">
+                <span className="mr-3 text-neutral/60">01.</span>Web Design
+              </h3>
+              <p className="text-sm leading-relaxed text-primary/90">
+                사용성과 미학에 중점을 둔 웹사이트 및 웹 애플리케이션을 위한
+                현대적이고 사용자 중심적인 인터페이스를 제작합니다.
+              </p>
+            </div>
+
+            <div className="service-item">
+              <h3 className="mb-3 text-xl font-medium">
+                <span className="mr-3 text-neutral/60">02.</span>Frontend
+                Development
+              </h3>
+              <p className="text-sm leading-relaxed text-primary/90">
+                최신 프레임워크와 웹 개발의 모범 사례를 활용하여 반응형이며
+                성능이 우수한 웹사이트를 구축합니다.
+              </p>
+            </div>
+
+            <div className="service-item">
+              <h3 className="mb-3 text-xl font-medium">
+                <span className="mr-3 text-neutral/60">03.</span>UI/UX
+                Consulting
+              </h3>
+              <p className="text-sm leading-relaxed text-primary/90">
+                사용자 경험 전략, 인터페이스 디자인 및 인터랙션 패턴에 대한
+                전문적인 가이드를 제공합니다.
+              </p>
+            </div>
+
+            <div className="service-item">
+              <h3 className="mb-3 text-xl font-medium">
+                <span className="mr-3 text-neutral/60">04.</span>Design Systems
+              </h3>
+              <p className="text-sm leading-relaxed text-primary/90">
+                디지털 제품 전반에 걸쳐 일관성과 확장성을 보장하는 포괄적인
+                디자인 시스템을 개발합니다.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Personal Section */}
+        <section className="mb-16 md:mb-24">
+          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">
+            일상의 모습
+          </h2>
+          <p className="mb-5 text-sm leading-relaxed text-primary/90">
+            디자인하거나 코딩하지 않을 때는 이런 것들을 즐깁니다:
+          </p>
+          <ul className="space-y-2 text-sm leading-relaxed text-primary/90">
+            <li>아날로그 사진 촬영</li>
+            <li>디자인 철학에 관한 독서</li>
+            <li>새로운 요리 레시피 실험</li>
+            <li>도시를 걸으며 산책하기</li>
           </ul>
         </section>
-      ) : null}
 
-      {resume.skills?.length ? (
-        <section>
-          <h2>Skills</h2>
-          <ul>
-            {resume.skills.map((s, i) => (
-              <li key={i}><strong>{s.category}</strong>: {s.items.join(" · ")}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+        {/* Contact Section */}
+        <section className="rounded-3xl bg-neutral/5 px-6 py-12 text-center md:px-10 md:py-16">
+          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">
+            함께 해요
+          </h2>
+          <p className="mx-auto mb-6 max-w-xl text-sm leading-relaxed text-primary/90">
+            새로운 프로젝트, 창의적인 아이디어 또는 비전을 함께할 기회에 대해
+            언제나 열려 있습니다.
+          </p>
+          <a
+            href="mailto:hello@idowww.com"
+            className="mb-6 inline-block text-xl text-primary transition-opacity hover:opacity-60"
+          >
+            hello@idowww.com
+          </a>
 
-      {resume.education?.length ? (
-        <section>
-          <h2>Education</h2>
-          <ul>
-            {resume.education.map((e, i) => (
-              <li key={i}>
-                <strong>{e.school}</strong> {e.degree ? `· ${e.degree}` : ""} ({e.start}–{e.end})
-              </li>
-            ))}
-          </ul>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-neutral md:text-sm">
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              GitHub
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Behance
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              Instagram
+            </a>
+          </div>
         </section>
-      ) : null}
+      </div>
     </div>
   );
 }
 ```
 
-## src\pages\Home.tsx
+# `D:\idowww\src\pages\Home.tsx`
 
-```tsx
+```typescript
+import { Link } from "react-router-dom";
+import { useProjectsData } from "../utils/useProjectsData";
+import type { Project } from "../types/Project";
+
+// Projects.tsx와 동일한 SVG 플레이스홀더
+const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <rect width="100%" height="100%" fill="#E5E7EB"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial" font-size="56" fill="#9CA3AF">
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">No Image</text>
+  </g>
+</svg>`;
+const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(
+  SVG_PLACEHOLDER
+)}`;
+const withFallback = (src?: string) =>
+  src && src.trim() ? src : PLACEHOLDER_THUMBNAIL;
+
+// 기간 문자열에서 정렬용 key 추출
+function getPeriodEndKey(period?: string): number {
+  if (!period) return 0;
+
+  // 숫자만 남기고 나머지는 공백 처리 (., -, ~ 등 혼합 대응)
+  const cleaned = period.replace(/[^\d]/g, " ");
+  const parts = cleaned
+    .split(" ")
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  if (parts.length === 0) return 0;
+
+  if (parts.length === 1) {
+    const only = parts[0];
+    if (only.length === 4) {
+      const year = Number(only) || 0;
+      return year * 100 + 12;
+    }
+    const val = Number(only) || 0;
+    return val;
+  }
+
+  const last = parts[parts.length - 1];
+  const prev = parts[parts.length - 2];
+
+  if (prev.length === 4 && last.length <= 2) {
+    const year = Number(prev) || 0;
+    const month = Number(last) || 1;
+    return year * 100 + month;
+  }
+
+  if (last.length === 4) {
+    const year = Number(last) || 0;
+    return year * 100 + 12;
+  }
+
+  const y = Number(last.slice(0, 4)) || 0;
+  const m = Number(last.slice(4)) || 12;
+  return y * 100 + m;
+}
 
 export default function Home() {
-  return <div>Home</div>;
+  const { projects, loading, error } = useProjectsData();
+
+  const selectedProjects: Project[] = 
+    !loading && !error && projects
+      ? projects
+          .filter((p) => p.featured)
+          .sort((a, b) => getPeriodEndKey(b.period) - getPeriodEndKey(a.period))
+          .slice(0, 3)
+      : [];
+
+  return (
+    <div id="home-page">
+      {/* Hero Section */}
+      <section
+        className="
+          relative
+          flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center
+          px-6 text-center
+          md:px-10
+        "
+      >
+        <h1
+          className="
+            mb-5
+            text-[42px] tracking-[-0.06em]
+            md:text-[72px]
+            lg:text-[96px]
+          "
+        >
+          IdoWWW
+        </h1>
+
+        <div
+          className="
+            mb-2
+            text-lg text-body
+            md:text-2xl
+          "
+        >
+          UI/UX Designer &amp; Publishing
+        </div>
+
+        <div
+          className="
+            pointer-events-none
+            absolute bottom-10
+            text-sm text-neutral-500
+            animate-bounce
+          "
+        >
+          ↓ Scroll to explore
+        </div>
+      </section>
+
+      {/* Featured Works (Selected Works) */}
+      <section className="mx-auto max-w-7xl px-4 py-20">
+        <h2
+          className="
+            mb-12 text-center
+            text-[32px] font-light
+            md:mb-16 md:text-[40px]
+            lg:text-[48px]
+          "
+        >
+          Selected Works
+        </h2>
+
+        {/* 로딩 상태: 카드 그리드 스켈레톤 */}
+        {loading && (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <article
+                key={i}
+                className="card-portfolio card--list animate-pulse"
+              >
+                <div className="card-media bg-neutral/10" />
+                <div className="card-body space-y-2">
+                  <div className="h-3 w-24 rounded bg-neutral/10" />
+                  <div className="h-4 w-40 rounded bg-neutral/10" />
+                  <div className="h-3 w-32 rounded bg-neutral/10" />
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="h-6 w-12 rounded-full bg-neutral/10" />
+                    <span className="h-6 w-10 rounded-full bg-neutral/10" />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {/* 에러 or featured 없음 */}
+        {!loading && (error || selectedProjects.length === 0) && (
+          <div className="text-center text-sm text-neutral">
+            표시할 대표 프로젝트가 없습니다.
+          </div>
+        )}
+
+        {/* 실제 featured 프로젝트 3개 */}
+        {!loading && !error && selectedProjects.length > 0 && (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {selectedProjects.map((p) => {
+              // role 문자열을 칩용 배열로 변환 (중복 제거)
+              const roleChips = Array.from(
+                new Set(
+                  (p.role ?? "")
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                )
+              );
+
+              return (
+                <Link
+                  key={p.slug}
+                  to={`/projects/${p.slug}`}
+                  className="block"
+                >
+                  {/* Projects.tsx 카드와 동일한 마크업/클래스 */}
+                  <article className="card-portfolio card--list">
+                    <div className="card-media">
+                      <img
+                        src={withFallback(p.thumbnail)}
+                        alt={p.title}
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <div className="card-body">
+                      <div
+                        className="text-sm text-neutral truncate"
+                        title={p.period}
+                      >
+                        {p.period}
+                      </div>
+
+                      <h2
+                        className="text-xl font-semibold truncate"
+                        title={p.title}
+                      >
+                        {p.title}
+                      </h2>
+
+                      {p.impact && (
+                        <div
+                          className="text-sm text-primary/80 truncate"
+                          title={p.impact}
+                        >
+                          {p.impact}
+                        </div>
+                      )}
+
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {roleChips.map((r) => (
+                          <span key={r} className="tag-chip">
+                            {r}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* Brief Introduction */}
+      <section className="mx-auto max-w-[800px] px-6 py-24 text-center md:px-10 md:py-32">
+        <h2
+          className="
+            mb-10
+            text-[28px] font-light
+            md:text-[32px]
+            lg:text-[36px]
+          "
+        >
+          Hello, I'm idoWWW
+        </h2>
+        <p className="mb-10 text-body leading-relaxed md:text-lg">
+          I'm a creative developer based in Seoul, specializing in translating
+          ideas into elegant digital solutions. With a background in both design
+          and development, I bridge the gap between aesthetics and
+          functionality.
+        </p>
+
+        <Link
+          to="/about"
+          className="
+            inline-block
+            border border-primary px-10 py-4
+            text-sm font-medium
+            transition-colors
+            hover:bg-primary hover:text-white
+          "
+        >
+          More About Me →
+        </Link>
+      </section>
+
+      {/* Contact Section */}
+      <section className="bg-muted/40 px-6 py-24 text-center md:px-10 md:py-32">
+        <h2
+          className="
+            mb-8
+            text-[32px] font-light
+            md:text-[40px]
+            lg:text-[48px]
+          "
+        >
+          Let's work together
+        </h2>
+
+        <a
+          href="mailto:hello@idowww.com"
+          className="
+            mb-10 inline-block
+            text-2xl
+            text-primary
+            transition-opacity
+            hover:opacity-70
+          "
+        >
+          hello@idowww.com
+        </a>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral">
+          <a
+            href="#"
+            className="transition-colors hover:text-primary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="#"
+            className="transition-colors hover:text-primary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+          <a
+            href="#"
+            className="transition-colors hover:text-primary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Behance
+          </a>
+          <a
+            href="#"
+            className="transition-colors hover:text-primary"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Instagram
+          </a>
+        </div>
+      </section>
+    </div>
+  );
 }
 ```
 
-## src\pages\ProjectDetail.tsx
+# `D:\idowww\src\pages\ProjectDetail.tsx`
 
-```tsx
+```typescript
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useProjectsData } from "../utils/useProjectsData";
-
 
 export default function ProjectDetail() {
   const { slug } = useParams();
@@ -628,7 +1385,7 @@ export default function ProjectDetail() {
 
   return (
     <>
-      {/* Sticky header *\/
+      {/* Sticky header */}
       <div className={`sticky ${revealed ? "top-16" : "top-0"} z-40 w-full`}>
         <div className="h-12 border-b border-neutral/15 bg-white/70 backdrop-blur">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6 lg:px-8 flex items-center gap-3">
@@ -643,20 +1400,20 @@ export default function ProjectDetail() {
       </div>
 
       <div className="mx-auto max-w-4xl py-16 px-4">
-        {/* Client *\/
+        {/* Client */}
         {project.client && (
           <div className="mb-1 text-[clamp(18px,1.25vw,20px)] leading-[1.5] text-neutral">
             {project.client}
           </div>
         )}
 
-        {/* Title *\/
+        {/* Title */}
         <h1 className="mb-4 text-h1 font-condor">{project.title}</h1>
 
-        {/* 기간 / 역할 / 소속 *\/
+        {/* 기간 / 역할 / 소속 */}
         <div className="mb-10 grid gap-4 sm:grid-cols-3">
 
-          {/* 기간 *\/
+          {/* 기간 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">기간</div>
@@ -664,13 +1421,13 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* 역할 + 포지션 *\/
+          {/* 역할 + 포지션 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">역할</div>
               <div className="mt-1 font-semibold truncate">{project.role}</div>
 
-              {/* parsedPositions *\/
+              {/* parsedPositions */}
               {project.parsedPositions.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-6">
                   {project.parsedPositions.map((pos) => (
@@ -681,7 +1438,7 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* 소속 *\/
+          {/* 소속 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">소속</div>
@@ -692,14 +1449,14 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        {/* 태그 *\/
+        {/* 태그 */}
         <div className="mb-10 flex flex-wrap gap-2">
           {project.parsedTags.map((tag) => (
             <span key={tag} className="tag-chip">{tag}</span>
           ))}
         </div>
 
-        {/* 썸네일: 값이 없거나 로드 실패 시 렌더링하지 않음 *\/
+        {/* 썸네일: 값이 없거나 로드 실패 시 렌더링하지 않음 */}
         {project.thumbnail?.trim() && !imgFailed && (
           <div className="device-bleed mb-10">
             <div className="aspect-video w-full overflow-hidden">
@@ -714,12 +1471,12 @@ export default function ProjectDetail() {
           </div>
         )}
 
-        {/* Description *\/
+        {/* Description */}
         <p className="whitespace-pre-line text-body leading-relaxed text-primary/90">
           {project.description}
         </p>
 
-        {/* Awards *\/
+        {/* Awards */}
         {project.parsedAwards && project.parsedAwards.length > 0 && (
           <div className="mt-12">
             <h2 className="mb-4 text-xl font-semibold text-primary">🏆 수상내역</h2>
@@ -734,7 +1491,7 @@ export default function ProjectDetail() {
           </div>
         )}
 
-        {/* Related Links *\/
+        {/* Related Links */}
         {project.parsedUrls.length > 0 && (
           <div className="mt-16">
             <h2 className="mb-4 text-xl font-semibold text-primary">⚓ Links</h2>
@@ -761,9 +1518,10 @@ export default function ProjectDetail() {
 }
 ```
 
-## src\pages\Projects.tsx
+# `D:\idowww\src\pages\Projects.tsx`
 
-```tsx
+```typescript
+// Projects.tsx
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState, useEffect } from "react";
 import type React from "react";
@@ -790,16 +1548,16 @@ const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
 // --- Icons (텍스트 대신 사용) ---
 const IconGrid = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-    <rect x="3" y="3" width="7" height="7" rx="1.5" stroke-width="1.5" />
-    <rect x="14" y="3" width="7" height="7" rx="1.5" stroke-width="1.5" />
-    <rect x="3" y="14" width="7" height="7" rx="1.5" stroke-width="1.5" />
-    <rect x="14" y="14" width="7" height="7" rx="1.5" stroke-width="1.5" />
+    <rect x="3" y="3" width="7" height="7" rx="1.5" strokeWidth="1.5" />
+    <rect x="14" y="3" width="7" height="7" rx="1.5" strokeWidth="1.5" />
+    <rect x="3" y="14" width="7" height="7" rx="1.5" strokeWidth="1.5" />
+    <rect x="14" y="14" width="7" height="7" rx="1.5" strokeWidth="1.5" />
   </svg>
 );
 const IconTable = ({ className = "h-5 w-5" }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className={className}>
-    <rect x="3" y="5" width="18" height="14" rx="2" stroke-width="1.5" />
-    <path d="M3 10h18M9 19V5" stroke-width="1.5" />
+    <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth="1.5" />
+    <path d="M3 10h18M9 19V5" strokeWidth="1.5" />
   </svg>
 );
 
@@ -807,16 +1565,16 @@ const IconTable = ({ className = "h-5 w-5" }: { className?: string }) => (
 const TAG_VISIBLE_LIMIT = 5;
 
 // 역할 토큰 → 표준 카테고리 매핑
-const CORE = new Set<RoleKey>(["Design", "Publishing", "Dev"]);
+const CORE = new Set<RoleKey>(["Design", "Publishing", "Development"]);
 function mapRoleTokenToCategory(token: string): RoleKey {
   const k = token.replace(/\s+/g, "").toLowerCase();
   if (k === "ui/uxdesign" || k === "uiuxdesign") return "Design";
   if (k === "webdesign" || k === "branddesign") return "Design";
-  if (k === "front-enddev" || k === "frontenddev" || k === "frontend" || k === "front-end") return "Dev";
+  if (k === "front-enddev" || k === "frontenddev" || k === "frontend" || k === "front-end") return "Development";
   if (k === "flash") return "Etc";
   if (k === "publishing" || k === "webpublishing") return "Publishing";
   if (k.includes("design")) return "Design";
-  if (k.includes("dev")) return "Dev";
+  if (k.includes("dev")) return "Development";
   if (k.includes("publish")) return "Publishing";
   return "Etc";
 }
@@ -872,7 +1630,7 @@ export default function Projects() {
     const all = projects.length;
     const design = projects.filter((p) => hasRole(p.role, "Design")).length;
     const publishing = projects.filter((p) => hasRole(p.role, "Publishing")).length;
-    const dev = projects.filter((p) => hasRole(p.role, "Dev")).length;
+    const dev = projects.filter((p) => hasRole(p.role, "Development")).length;
     const etc = projects.filter((p) => hasRole(p.role, "Etc")).length;
     return { ALL: all, Design: design, Publishing: publishing, Dev: dev, Etc: etc } as const;
   }, [projects]);
@@ -953,8 +1711,8 @@ export default function Projects() {
         /* 카드 그리드 */
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (
-            <Link key={p.slug} to={`/projects/${p.slug}`} className="block h-full">
-              <article className="card-portfolio card--list h-full">
+            <Link key={p.slug} to={`/projects/${p.slug}`} className="block">
+              <article className="card-portfolio card--list">
                 <div className="card-media">
                   <img
                     src={withFallback(p.thumbnail)}
@@ -974,7 +1732,7 @@ export default function Projects() {
                       {p.title}
                     </h2>
                     {p.impact && (
-                      <div className="text-sm text-primary/80 truncate" title={p.impact}>
+                      <div className="text-sm text-neutral-700 dark:text-neutral-200 truncate" title={p.impact}>
                         {p.impact}
                       </div>
                     )}
@@ -1055,10 +1813,10 @@ export default function Projects() {
 }
 ```
 
-## src\types\Project.ts
+# `D:\idowww\src\types\Project.ts`
 
-```ts
-// types/Project.ts
+```typescript
+// src/types/Project.ts
 
 /**
  * Excel 시트의 원본 구조 그대로 맵핑되는 타입.
@@ -1074,45 +1832,67 @@ export type RawProject = {
   role: string;          // "Design,Publishing,Dev"
   impact: string;
   tags: string;          // "React,Spring,Figma" (쉼표 구분 문자열)
-  awards?: string;       // 줄바꿈 구분 텍스트 (한 줄 = 한 수상 내역)
-  thumbnail: string;
+
   description: string;
 
   client?: string;
   affiliation?: string;
-  positions?: string;    // "PL,PM,Lead"
-  urls?: string;         // "GitHub|https://...\nDemo|https://..."
+  thumbnail: string;
+
+  // comma 구분 문자열 ("PL,PM")
+  positions?: string;
+
+  // 줄바꿈 + "label|href" 형식
+  urls?: string;
+
+  // 줄바꿈 텍스트
+  awards?: string;
+
+  // 시트 상에서 Y / TRUE / 1 등으로 들어오는 featured 플래그
+  featured?: string;
 };
 
-
-/**
- * 파싱된 URL(item) 구조.
- * ProjectDetail 내에서 사용되는 형태.
- */
 export type UrlItem = {
   label: string;
   href: string;
 };
 
-
 /**
  * UI에서 사용하는 최종 가공 타입.
- * RawProject + Parsed fields (tags, positions, urls 파싱 결과)
+ * RawProject + Parsed fields (tags, positions, urls, awards, featured 플래그)
  */
-export type Project = RawProject & {
+export type Project = {
+  slug: string;
+  title: string;
+  period: string;
+  role: string;
+  impact: string;
+  tags: string;
+  description: string;
+
+  client?: string;
+  affiliation?: string;
+  thumbnail: string;
+  positions?: string;
+  urls?: string;
+  awards?: string;
+
+  // 파싱된 필드들
   parsedTags: string[];        // ["React", "Spring", "Figma"]
   parsedPositions: string[];   // ["PL", "PM"]
   parsedUrls: UrlItem[];       // [{label, href}, ...]
-  parsedAwards: string[];      // ["2013 · 웹어워드코리아 대상 (...)", ...]
+  parsedAwards: string[];      // ["수상1", "수상2", ...]
+
+  // boolean 으로 정리된 featured 플래그
+  featured: boolean;
 };
 ```
 
-## src\types\resume.ts
+# `D:\idowww\src\types\resume.ts`
 
-```ts
+```typescript
 export type Resume = {
-  experience: {
-    company: string; role: string; start: string; end?: string;
+  experience: { company: string; role: string; start: string; end?: string;
     location?: string; summary?: string; stack?: string[]; achievements?: string[];
   }[];
   education: { school: string; degree?: string; start?: string; end?: string; note?: string }[];
@@ -1121,9 +1901,9 @@ export type Resume = {
 };
 ```
 
-## src\utils\parseProject.ts
+# `D:\idowww\src\utils\parseProject.ts`
 
-```ts
+```typescript
 // utils/parseProject.ts
 
 import type { RawProject, Project, UrlItem } from "../types/Project";
@@ -1158,7 +1938,7 @@ function parseMultiline(raw?: string): string[] {
 }
 
 /**
- * 쉼표 구분 문자열을 string[]으로 변환한다.
+ * 쉼표 구분 문자열을 string[]로 변환한다.
  * 예: "React,Spring,ERP" → ["React","Spring","ERP"]
  */
 function parseCsvList(raw?: string): string[] {
@@ -1170,17 +1950,30 @@ function parseCsvList(raw?: string): string[] {
 }
 
 /**
+ * 시트의 플래그 문자열(Y / TRUE / 1 등)을 boolean 으로 변환.
+ */
+function parseBooleanFlag(raw?: string): boolean {
+  if (!raw) return false;
+  const v = raw.toString().trim().toLowerCase();
+  return v === "y" || v === "yes" || v === "true" || v === "1";
+}
+
+/**
  * RawProject → Project 변환 함수 (UI에서 쓰는 최종 구조).
  */
 export function parseProject(raw: RawProject): Project {
   return {
+    // 원본 필드 그대로 복사
     ...raw,
 
-    // 태그/포지션/URL 파싱 결과
+    // 태그/포지션/URL/어워드 파싱 결과
     parsedTags: parseCsvList(raw.tags),
     parsedPositions: parseCsvList(raw.positions),
     parsedUrls: parseUrls(raw.urls),
     parsedAwards: parseMultiline(raw.awards),
+
+    // featured 플래그
+    featured: parseBooleanFlag(raw.featured),
   };
 }
 
@@ -1189,45 +1982,5 @@ export function parseProject(raw: RawProject): Project {
  */
 export function parseProjectList(rawList: RawProject[]): Project[] {
   return rawList.map((raw) => parseProject(raw));
-}
-```
-
-## src\utils\useProjectsData.ts
-
-```ts
-import { useEffect, useState } from "react";
-import type { RawProject, Project } from "../types/Project";
-import { parseProjectList } from "./parseProject";
-
-const SHEET_URL =
-  "https://opensheet.elk.sh/1Z1JXAZLivcAmA79pm_m57jXmPEQqPzUrszRl23l8jBU/1";
-
-export function useProjectsData() {
-  const [projects, setProjects] = useState<Project[] | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<unknown>(null);
-
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const r = await fetch(SHEET_URL, { cache: "no-store" });
-        const raw = (await r.json()) as RawProject[];
-        const parsed = parseProjectList(raw);
-
-        if (alive) setProjects(parsed);
-      } catch (e) {
-        if (alive) setError(e);
-      } finally {
-        if (alive) setLoading(false);
-      }
-    })();
-
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  return { projects, loading, error };
 }
 ```

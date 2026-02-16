@@ -1,64 +1,75 @@
-﻿// src/pages/Home.tsx
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { useProjectsData } from "../utils/useProjectsData";
 import type { Project } from "../types/Project";
 
-const SVG_PLACEHOLDER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='500'%3E%3Crect fill='%23f0f0f0' width='800' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='24'%3ENo%20Image%3C/text%3E%3C/svg%3E";
+// Projects.tsx와 동일한 SVG 플레이스홀더
+const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <rect width="100%" height="100%" fill="#E5E7EB"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial" font-size="56" fill="#9CA3AF">
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">No Image</text>
+  </g>
+</svg>`;
+const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(
+  SVG_PLACEHOLDER
+)}`;
+const withFallback = (src?: string) =>
+  src && src.trim() ? src : PLACEHOLDER_THUMBNAIL;
 
-// "2025.09–2025.09", "2023.10~2023.12", "2019~2021" 같은 문자열에서
-// 끝나는 년/월 기준 정렬 키(YYYYMM)를 만든다.
+// 기간 문자열에서 정렬용 key 추출
 function getPeriodEndKey(period?: string): number {
   if (!period) return 0;
 
+  // 숫자만 남기고 나머지는 공백 처리 (., -, ~ 등 혼합 대응)
   const cleaned = period.replace(/[^\d]/g, " ");
-  const nums = cleaned
+  const parts = cleaned
     .split(" ")
-    .map((n) => n.trim())
+    .map((p) => p.trim())
     .filter(Boolean);
 
-  if (nums.length >= 2) {
-    const last = nums[nums.length - 1];
-    const prev = nums[nums.length - 2];
+  if (parts.length === 0) return 0;
 
-    // "2023 12" → 202312
-    if (prev.length === 4 && last.length <= 2) {
-      const year = Number(prev) || 0;
-      const month = Number(last) || 1;
-      return year * 100 + month;
-    }
-
-    // "2019 2021" → 끝나는 연도 기준 202112
-    if (last.length === 4) {
-      const year = Number(last) || 0;
+  if (parts.length === 1) {
+    const only = parts[0];
+    if (only.length === 4) {
+      const year = Number(only) || 0;
       return year * 100 + 12;
     }
+    const val = Number(only) || 0;
+    return val;
   }
 
-  if (nums.length === 1 && nums[0].length === 4) {
-    const year = Number(nums[0]) || 0;
+  const last = parts[parts.length - 1];
+  const prev = parts[parts.length - 2];
+
+  if (prev.length === 4 && last.length <= 2) {
+    const year = Number(prev) || 0;
+    const month = Number(last) || 1;
+    return year * 100 + month;
+  }
+
+  if (last.length === 4) {
+    const year = Number(last) || 0;
     return year * 100 + 12;
   }
 
-  return 0;
+  const y = Number(last.slice(0, 4)) || 0;
+  const m = Number(last.slice(4)) || 12;
+  return y * 100 + m;
 }
 
 export default function Home() {
   const { projects, loading, error } = useProjectsData();
 
-  // featured = true 인 프로젝트 중 최신 3개
   const selectedProjects: Project[] =
     !loading && !error && projects
       ? projects
           .filter((p) => p.featured)
-          .sort(
-            (a, b) => getPeriodEndKey(b.period) - getPeriodEndKey(a.period)
-          )
+          .sort((a, b) => getPeriodEndKey(b.period) - getPeriodEndKey(a.period))
           .slice(0, 3)
       : [];
 
   return (
-    <div id="home-page" className="bg-white text-black">
+    <div id="home-page">
       {/* Hero Section */}
       <section
         className="
@@ -71,7 +82,7 @@ export default function Home() {
         <h1
           className="
             mb-5
-            text-[42px] font-light tracking-[-0.06em]
+            text-[42px] tracking-[-0.06em]
             md:text-[72px]
             lg:text-[96px]
           "
@@ -82,14 +93,14 @@ export default function Home() {
         <div
           className="
             mb-2
-            text-lg text-[#666666]
+            text-lg text-body
             md:text-2xl
           "
         >
           UI/UX Designer &amp; Publishing
         </div>
 
-        <div className="text-sm text-[#999999] md:text-base">
+        <div className="text-sm text-subtext">
           Crafting digital experiences through code and design
         </div>
 
@@ -97,7 +108,7 @@ export default function Home() {
           className="
             pointer-events-none
             absolute bottom-10
-            text-sm text-[#999999]
+            text-sm text-neutral-500
             animate-bounce
           "
         >
@@ -172,7 +183,7 @@ export default function Home() {
                   <article className="card-portfolio card--list">
                     <div className="card-media">
                       <img
-                        src={p.thumbnail || SVG_PLACEHOLDER}
+                        src={withFallback(p.thumbnail)}
                         alt={p.title}
                         loading="lazy"
                       />
@@ -230,10 +241,10 @@ export default function Home() {
         >
           Hello, I&apos;m idoWWW
         </h2>
-        <p className="mb-10 text-base leading-relaxed text-[#333333] md:text-lg">
-          I&apos;m a creative developer based in Seoul, specializing in
-          translating ideas into elegant digital solutions. With a background in
-          both design and development, I bridge the gap between aesthetics and
+        <p className="mb-10 text-body leading-relaxed md:text-lg">
+          I'm a creative developer based in Seoul, specializing in translating
+          ideas into elegant digital solutions. With a background in both design
+          and development, I bridge the gap between aesthetics and
           functionality.
         </p>
 
@@ -241,10 +252,10 @@ export default function Home() {
           to="/about"
           className="
             inline-block
-            border border-black px-10 py-4
-            text-sm
+            border border-primary px-10 py-4
+            text-sm font-medium
             transition-colors
-            hover:bg-black hover:text-white
+            hover:bg-primary hover:text-white
           "
         >
           More About Me →
@@ -252,7 +263,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-[#FAFAFA] px-6 py-24 text-center md:px-10 md:py-32">
+      <section className="bg-muted/40 px-6 py-24 text-center md:px-10 md:py-32">
         <h2
           className="
             mb-8
@@ -265,22 +276,22 @@ export default function Home() {
         </h2>
 
         <a
-          href="mailto:hello@idowww.com"
+          href="mailto:idowww11@gmail.com"
           className="
             mb-10 inline-block
             text-2xl
-            text-black
+            text-primary
             transition-opacity
-            hover:opacity-50
+            hover:opacity-70
           "
         >
-          hello@idowww.com
+          idowww11@gmail.com
         </a>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-[#666666]">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral">
           <a
             href="#"
-            className="transition-colors hover:text-black"
+            className="transition-colors hover:text-primary"
             target="_blank"
             rel="noreferrer"
           >
@@ -288,7 +299,7 @@ export default function Home() {
           </a>
           <a
             href="#"
-            className="transition-colors hover:text-black"
+            className="transition-colors hover:text-primary"
             target="_blank"
             rel="noreferrer"
           >
@@ -296,7 +307,7 @@ export default function Home() {
           </a>
           <a
             href="#"
-            className="transition-colors hover:text-black"
+            className="transition-colors hover:text-primary"
             target="_blank"
             rel="noreferrer"
           >
@@ -304,7 +315,7 @@ export default function Home() {
           </a>
           <a
             href="#"
-            className="transition-colors hover:text-black"
+            className="transition-colors hover:text-primary"
             target="_blank"
             rel="noreferrer"
           >

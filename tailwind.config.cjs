@@ -9,10 +9,10 @@ module.exports = {
         secondary: { DEFAULT: '#f3e2e6', dark: '#4a3944' },
         neutral: { DEFAULT: '#9ca9c9', dark: '#6a7590' },
         surface:  { DEFAULT: '#ffffff',  dark: '#11161c' },     // 카드/표면
-        base:     { DEFAULT: '#f6f7fb',  dark: '#0c1117' },     // 페이지 바탕
+        base:     { DEFAULT: '#f6f7fb',  dark: '#1a1d28' },     // 페이지 바탕
         line:     { DEFAULT: '#e6e8f0',  dark: '#243042' },     // 보더
-        text:     { DEFAULT: '#2b3445',  dark: '#cfd7e3' },     // 본문
-        subtext:  { DEFAULT: '#6b7280',  dark: '#93a1b6' },     // 보조
+        body:     { DEFAULT: '#rgb(42, 46, 58)',  dark: 'rgb(232, 234, 240)' },     // 본문
+        subtext:  { DEFAULT: 'rgb(156, 169, 201)',  dark: 'rgb(106, 117, 144)' },     // 보조
         accent:   { DEFAULT: '#6d7cff',  dark: '#8ea2ff' },     // 포커스/선택
       },
       borderRadius: {

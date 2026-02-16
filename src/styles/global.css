@@ -13,8 +13,8 @@ body {
 }
 
 /* 전역 톤 */
-html { @apply text-text bg-base; }
-html.dark { @apply text-text-dark bg-base-dark; }
+html { @apply text-body bg-base; }
+html.dark { @apply text-body-dark bg-base-dark; }
 
 .site-header {
   @apply border-b border-neutral/30 bg-white/80 backdrop-blur
@@ -58,7 +58,7 @@ html.dark .pill { @apply bg-[rgba(142,162,255,0.12)] text-accent border-accent/2
 /* 버튼(선택) */
 .btn {
   @apply inline-flex items-center justify-center rounded-lg px-4 py-2
-         border border-line bg-surface text-text transition;
+         border border-line bg-surface text-body transition;
 }
 .btn-primary {
   @apply bg-accent text-white border-transparent hover:opacity-90;
@@ -135,8 +135,6 @@ html.dark .site-header--floating {
 
 
 
-
-
 .device-bleed{
   position: relative;
   width: 100vw;
@@ -163,7 +161,6 @@ html.dark .site-header--floating {
     background: rgb(255, 255, 255);
     border: 2px solid rgb(243, 226, 230);
     border-radius: 12px;
-    /* padding: 32px;  ← 제거 */
     transition: 0.2s;
     transform: translateY(0);
     box-shadow: none;
