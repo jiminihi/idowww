@@ -1,4 +1,4 @@
-﻿import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useProjectsData } from "../utils/useProjectsData";
@@ -42,13 +42,13 @@ export default function ProjectDetail() {
 
   return (
     <>
-      {/* Sticky header */}
+      {/* Sticky header — ✅ 다크모드 배경 추가 */}
       <div className={`sticky ${revealed ? "top-16" : "top-0"} z-40 w-full`}>
-        <div className="h-12 border-b border-neutral/15 bg-white/70 backdrop-blur">
+        <div className="h-12 border-b border-neutral/15 bg-white/70 backdrop-blur dark:bg-base-dark/80">
           <div className="mx-auto max-w-7xl h-full px-4 md:px-6 lg:px-8 flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
-              className="rounded border px-3 py-1 text-sm transition hover:bg-neutral/10"
+              className="rounded border border-neutral/30 px-3 py-1 text-sm transition hover:bg-neutral/10 dark:border-neutral-dark/30"
             >
               ← Back
             </button>
@@ -69,8 +69,6 @@ export default function ProjectDetail() {
 
         {/* 기간 / 역할 / 소속 */}
         <div className="mb-10 grid gap-4 sm:grid-cols-3">
-
-          {/* 기간 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">기간</div>
@@ -78,15 +76,12 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* 역할 + 포지션 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">역할</div>
               <div className="mt-1 font-semibold truncate">{project.role}</div>
-
-              {/* parsedPositions */}
               {project.parsedPositions.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-6">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {project.parsedPositions.map((pos) => (
                     <span key={pos} className="tag-chip">{pos}</span>
                   ))}
@@ -95,7 +90,6 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* 소속 */}
           <div className="card-portfolio card--detail">
             <div className="card-body">
               <div className="text-sm text-neutral">소속</div>
@@ -113,7 +107,7 @@ export default function ProjectDetail() {
           ))}
         </div>
 
-        {/* 썸네일: 값이 없거나 로드 실패 시 렌더링하지 않음 */}
+        {/* 썸네일 */}
         {project.thumbnail?.trim() && !imgFailed && (
           <div className="device-bleed mb-10">
             <div className="aspect-video w-full overflow-hidden">
@@ -152,7 +146,6 @@ export default function ProjectDetail() {
         {project.parsedUrls.length > 0 && (
           <div className="mt-16">
             <h2 className="mb-4 text-xl font-semibold text-primary">⚓ Links</h2>
-
             <div className="flex flex-wrap gap-4">
               {project.parsedUrls.map((u, i) => (
                 <a
@@ -160,8 +153,9 @@ export default function ProjectDetail() {
                   href={u.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded border px-4 py-2 text-sm 
-                             transition bg-white hover:bg-neutral/10"
+                  className="inline-flex items-center gap-2 rounded border px-4 py-2 text-sm
+                             transition bg-surface hover:bg-neutral/10
+                             dark:bg-surface-dark dark:border-neutral-dark/30"
                 >
                   {u.label}
                 </a>

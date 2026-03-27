@@ -5,18 +5,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: { DEFAULT: '#4a546a', dark: '#9ca9c9' },
+        primary:   { DEFAULT: '#4a546a', dark: '#9ca9c9' },
         secondary: { DEFAULT: '#f3e2e6', dark: '#4a3944' },
-        neutral: { DEFAULT: '#9ca9c9', dark: '#6a7590' },
-        surface:  { DEFAULT: '#ffffff',  dark: '#11161c' },     // 카드/표면
-        base:     { DEFAULT: '#f6f7fb',  dark: '#1a1d28' },     // 페이지 바탕
-        line:     { DEFAULT: '#e6e8f0',  dark: '#243042' },     // 보더
-        body:     { DEFAULT: '#rgb(42, 46, 58)',  dark: 'rgb(232, 234, 240)' },     // 본문
-        subtext:  { DEFAULT: 'rgb(156, 169, 201)',  dark: 'rgb(106, 117, 144)' },     // 보조
-        accent:   { DEFAULT: '#6d7cff',  dark: '#8ea2ff' },     // 포커스/선택
+        neutral:   { DEFAULT: '#9ca9c9', dark: '#6a7590' },
+        surface:   { DEFAULT: '#ffffff', dark: '#11161c' },   // 카드/표면
+        base:      { DEFAULT: '#f6f7fb', dark: '#1a1d28' },   // 페이지 바탕
+        line:      { DEFAULT: '#e6e8f0', dark: '#243042' },   // 보더
+        // ✅ 수정: '#rgb(...)' → 올바른 hex 값
+        body:      { DEFAULT: '#2a2e3a', dark: '#e8eaf0' },   // 본문
+        subtext:   { DEFAULT: '#9ca9c9', dark: '#6a7590' },   // 보조
+        accent:    { DEFAULT: '#6d7cff', dark: '#8ea2ff' },   // 포커스/선택
+        muted:     { DEFAULT: '#f3f4f8', dark: '#252836' },   // 배경 보조
+        border:    { DEFAULT: '#e6e8f0', dark: '#2d3348' },   // alias
       },
       borderRadius: {
-        xl: '16px',
+        xl:   '16px',
         '2xl': '20px',
       },
       boxShadow: {
@@ -25,12 +28,12 @@ module.exports = {
       },
       fontFamily: {
         pretendard: ['Pretendard Variable', 'sans-serif'],
-        condor: ['Condor', 'Pretendard Variable', 'sans-serif'],
+        condor:     ['Condor', 'Pretendard Variable', 'sans-serif'],
       },
       fontSize: {
-        h1: ['clamp(32px, 4vw + 8px, 56px)', { lineHeight: '1.25' }],
-        h2: ['clamp(24px, 3vw + 6px, 36px)', { lineHeight: '1.3' }],
-        h3: ['clamp(20px, 2vw + 4px, 24px)', { lineHeight: '1.35' }],
+        h1:   ['clamp(32px, 4vw + 8px, 56px)',  { lineHeight: '1.25' }],
+        h2:   ['clamp(24px, 3vw + 6px, 36px)',  { lineHeight: '1.3'  }],
+        h3:   ['clamp(20px, 2vw + 4px, 24px)',  { lineHeight: '1.35' }],
         body: ['clamp(16px, 1.2vw + 6px, 18px)', { lineHeight: '1.6' }],
       },
     },

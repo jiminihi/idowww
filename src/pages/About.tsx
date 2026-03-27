@@ -1,15 +1,24 @@
-﻿import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import type { Resume } from "../types/resume";
 
 const PROFILE_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23f0f0f0' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='20'%3EProfile Image%3C/text%3E%3C/svg%3E";
+
+// ─── SNS 링크 ────────────────────────────────────────────────
+// TODO: 실제 프로필 URL로 교체하세요
+const SNS_LINKS = [
+  { label: "LinkedIn — linkedin.com/in/idowww",  href: "https://linkedin.com/in/idowww" }, // 예: "https://linkedin.com/in/idowww"
+  { label: "GitHub — github.com/idowww",          href: "https://github.com/idowww" }, // 예: "https://github.com/idowww"
+  { label: "Codepen — codepen.io/idowww",          href: "https://codepen.io/idowww" }, // 예: "https://codepen.io/idowww"
+  { label: "Behance — behance.net/idowww",        href: "https://behance.net/idowww" }, // 예: "https://behance.net/idowww"
+  { label: "Instagram — @idowww", href: "https://instagram.com/idowww" }, // 예: "https://instagram.com/idowww"
+] as const;
 
 export default function About() {
   const [resume, setResume] = useState<Resume | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // 필요하면 나중에 BASE_URL 대응용으로만 사용
   const resumePath = useMemo(() => "/data/resume.json", []);
 
   const fetchResume = useCallback(
@@ -56,7 +65,6 @@ export default function About() {
   const formatPeriod = (start: string, end?: string) =>
     end && end.trim() ? `${start} – ${end}` : `${start} – Present`;
 
-  // 로딩 상태
   if (loading) {
     return (
       <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
@@ -79,7 +87,6 @@ export default function About() {
     );
   }
 
-  // 에러 상태
   if (error) {
     return (
       <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
@@ -90,7 +97,7 @@ export default function About() {
         <button
           type="button"
           onClick={retry}
-          className="rounded border bg-white px-4 py-2 text-sm transition hover:bg-neutral/10"
+          className="rounded border bg-surface px-4 py-2 text-sm transition hover:bg-neutral/10"
         >
           다시 시도
         </button>
@@ -98,19 +105,18 @@ export default function About() {
     );
   }
 
-  // 데이터 없음
   if (!resume) {
     return (
       <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
         <h1 className="mb-2 text-2xl font-semibold text-primary">About</h1>
         <p className="mb-6 text-sm text-neutral">
-          표시할 데이터가 없습니다. <code>public/data/resume.json</code>을
-          확인한 뒤 다시 시도하세요.
+          표시할 데이터가 없습니다.{" "}
+          <code>public/data/resume.json</code>을 확인한 뒤 다시 시도하세요.
         </p>
         <button
           type="button"
           onClick={retry}
-          className="rounded border bg-white px-4 py-2 text-sm transition hover:bg-neutral/10"
+          className="rounded border bg-surface px-4 py-2 text-sm transition hover:bg-neutral/10"
         >
           다시 시도
         </button>
@@ -118,10 +124,11 @@ export default function About() {
     );
   }
 
-  // ↓↓↓ 아래부터는 네가 첨부한 About 레이아웃 그대로 유지 ↓↓↓
   return (
-    <div className="bg-white text-primary dark:bg-neutral-950 dark:text-neutral-50">
+    // bg-white 하드코딩 제거 → 테마 토큰 사용
+    <div className="bg-base text-primary dark:bg-base-dark dark:text-primary-dark">
       <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+
         {/* Profile Section */}
         <section className="mb-16 grid gap-10 md:mb-24 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:items-start">
           <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral/10">
@@ -237,13 +244,11 @@ export default function About() {
                         {e.company}
                         {e.location ? ` / ${e.location}` : ""}
                       </div>
-
                       {e.summary && (
                         <p className="mb-3 whitespace-pre-line text-sm leading-relaxed text-primary/90">
                           {e.summary}
                         </p>
                       )}
-
                       {e.achievements?.length ? (
                         <ul className="mb-3 space-y-1.5 text-sm leading-relaxed text-primary/90">
                           {e.achievements.map((a, i) => (
@@ -254,13 +259,10 @@ export default function About() {
                           ))}
                         </ul>
                       ) : null}
-
                       {e.stack?.length ? (
                         <div className="mt-3 flex flex-wrap gap-2">
                           {e.stack.map((s) => (
-                            <span key={s} className="tag-chip">
-                              {s}
-                            </span>
+                            <span key={s} className="tag-chip">{s}</span>
                           ))}
                         </div>
                       ) : null}
@@ -284,9 +286,7 @@ export default function About() {
                   key={`${ed.school}-${i}`}
                   className="rounded-2xl border border-neutral/20 px-5 py-4"
                 >
-                  <div className="text-sm font-semibold text-primary">
-                    {ed.school}
-                  </div>
+                  <div className="text-sm font-semibold text-primary">{ed.school}</div>
                   {(ed.degree || ed.note) && (
                     <div className="mt-1 text-xs text-neutral">
                       {[ed.degree, ed.note].filter(Boolean).join(" · ")}
@@ -309,57 +309,43 @@ export default function About() {
           <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
             What I Do
           </h2>
-
           <div className="space-y-10">
-            <div className="service-item">
-              <h3 className="mb-3 text-xl font-medium">
-                <span className="mr-3 text-neutral/60">01.</span>Web Design
-              </h3>
-              <p className="text-sm leading-relaxed text-primary/90">
-                사용성과 미학에 중점을 둔 웹사이트 및 웹 애플리케이션을 위한
-                현대적이고 사용자 중심적인 인터페이스를 제작합니다.
-              </p>
-            </div>
-
-            <div className="service-item">
-              <h3 className="mb-3 text-xl font-medium">
-                <span className="mr-3 text-neutral/60">02.</span>Frontend
-                Development
-              </h3>
-              <p className="text-sm leading-relaxed text-primary/90">
-                최신 프레임워크와 웹 개발의 모범 사례를 활용하여 반응형이며
-                성능이 우수한 웹사이트를 구축합니다.
-              </p>
-            </div>
-
-            <div className="service-item">
-              <h3 className="mb-3 text-xl font-medium">
-                <span className="mr-3 text-neutral/60">03.</span>UI/UX
-                Consulting
-              </h3>
-              <p className="text-sm leading-relaxed text-primary/90">
-                사용자 경험 전략, 인터페이스 디자인 및 인터랙션 패턴에 대한
-                전문적인 가이드를 제공합니다.
-              </p>
-            </div>
-
-            <div className="service-item">
-              <h3 className="mb-3 text-xl font-medium">
-                <span className="mr-3 text-neutral/60">04.</span>Design Systems
-              </h3>
-              <p className="text-sm leading-relaxed text-primary/90">
-                디지털 제품 전반에 걸쳐 일관성과 확장성을 보장하는 포괄적인
-                디자인 시스템을 개발합니다.
-              </p>
-            </div>
+            {[
+              {
+                num: "01.",
+                title: "Web Design",
+                desc: "사용성과 미학에 중점을 둔 웹사이트 및 웹 애플리케이션을 위한 현대적이고 사용자 중심적인 인터페이스를 제작합니다.",
+              },
+              {
+                num: "02.",
+                title: "Frontend Development",
+                desc: "최신 프레임워크와 웹 개발의 모범 사례를 활용하여 반응형이며 성능이 우수한 웹사이트를 구축합니다.",
+              },
+              {
+                num: "03.",
+                title: "UI/UX Consulting",
+                desc: "사용자 경험 전략, 인터페이스 디자인 및 인터랙션 패턴에 대한 전문적인 가이드를 제공합니다.",
+              },
+              {
+                num: "04.",
+                title: "Design Systems",
+                desc: "디지털 제품 전반에 걸쳐 일관성과 확장성을 보장하는 포괄적인 디자인 시스템을 개발합니다.",
+              },
+            ].map(({ num, title, desc }) => (
+              <div key={num} className="service-item">
+                <h3 className="mb-3 text-xl font-medium">
+                  <span className="mr-3 text-neutral/60">{num}</span>
+                  {title}
+                </h3>
+                <p className="text-sm leading-relaxed text-primary/90">{desc}</p>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Personal Section */}
         <section className="mb-16 md:mb-24">
-          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">
-            일상의 모습
-          </h2>
+          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">일상의 모습</h2>
           <p className="mb-5 text-sm leading-relaxed text-primary/90">
             디자인하거나 코딩하지 않을 때는 이런 것들을 즐깁니다:
           </p>
@@ -373,53 +359,37 @@ export default function About() {
 
         {/* Contact Section */}
         <section className="rounded-3xl bg-neutral/5 px-6 py-12 text-center md:px-10 md:py-16">
-          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">
-            함께 해요
-          </h2>
+          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">함께 해요</h2>
           <p className="mx-auto mb-6 max-w-xl text-sm leading-relaxed text-primary/90">
             새로운 프로젝트, 창의적인 아이디어 또는 비전을 함께할 기회에 대해
             언제나 열려 있습니다.
           </p>
+          {/* mailto: 앞 탭 문자 제거 */}
           <a
-            href="mailto:	idowww11@gmail.com"
+            href="mailto:idowww11@gmail.com"
             className="mb-6 inline-block text-xl text-primary transition-opacity hover:opacity-60"
           >
             idowww11@gmail.com
           </a>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-neutral md:text-sm">
-            <a
-              href="#" // 실제 링크로 교체
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              LinkedIn — linkedin.com/in/idowww
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              GitHub — github.com/idowww
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              Behance — behance.net/idowww
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noreferrer"
-              className="transition-colors hover:text-primary"
-            >
-              Instagram — @idowww
-            </a>
+            {SNS_LINKS.filter((s) => s.href).map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="transition-colors hover:text-primary"
+              >
+                {label}
+              </a>
+            ))}
+            {/* SNS URL이 모두 비어있을 때 임시 안내 */}
+            {SNS_LINKS.every((s) => !s.href) && (
+              <span className="text-neutral/50 text-xs">
+                (SNS 링크는 About.tsx의 SNS_LINKS 배열에서 추가하세요)
+              </span>
+            )}
           </div>
         </section>
       </div>
