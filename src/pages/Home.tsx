@@ -2,18 +2,15 @@ import { Link } from "react-router-dom";
 import { useProjectsData } from "../utils/useProjectsData";
 import type { Project } from "../types/Project";
 
-// Projects.tsx와 동일한 SVG 플레이스홀더
 const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
-  <rect width="100%" height="100%" fill="#E5E7EB"/>
-  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Arial" font-size="56" fill="#9CA3AF">
+  <rect width="100%" height="100%" fill="#FAFAFA"/>
+  <g font-family="system-ui" font-size="56" fill="#999999">
     <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">No Image</text>
   </g>
 </svg>`;
 const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(SVG_PLACEHOLDER)}`;
-const withFallback = (src?: string) =>
-  src && src.trim() ? src : PLACEHOLDER_THUMBNAIL;
+const withFallback = (src?: string) => (src && src.trim() ? src : PLACEHOLDER_THUMBNAIL);
 
-// 기간 문자열에서 정렬용 key 추출
 function getPeriodEndKey(period?: string): number {
   if (!period) return 0;
   const cleaned = period.replace(/[^\d]/g, " ");
@@ -21,25 +18,14 @@ function getPeriodEndKey(period?: string): number {
   if (parts.length === 0) return 0;
   if (parts.length === 1) {
     const only = parts[0];
-    if (only.length === 4) return (Number(only) || 0) * 100 + 12;
-    return Number(only) || 0;
+    return only.length === 4 ? (Number(only) || 0) * 100 + 12 : Number(only) || 0;
   }
   const last = parts[parts.length - 1];
   const prev = parts[parts.length - 2];
-  if (prev.length === 4 && last.length <= 2)
-    return (Number(prev) || 0) * 100 + (Number(last) || 1);
+  if (prev.length === 4 && last.length <= 2) return (Number(prev) || 0) * 100 + (Number(last) || 1);
   if (last.length === 4) return (Number(last) || 0) * 100 + 12;
   return (Number(last.slice(0, 4)) || 0) * 100 + (Number(last.slice(4)) || 12);
 }
-
-// ─── SNS 링크 ────────────────────────────────────────────────
-// TODO: 실제 프로필 URL로 교체하세요
-const SNS_LINKS = [
-  { label: "LinkedIn",  href: "" }, // 예: "https://linkedin.com/in/idowww"
-  { label: "GitHub",    href: "" }, // 예: "https://github.com/idowww"
-  { label: "Behance",   href: "" }, // 예: "https://behance.net/idowww"
-  { label: "Instagram", href: "" }, // 예: "https://instagram.com/idowww"
-] as const;
 
 export default function Home() {
   const { projects, loading, error } = useProjectsData();
@@ -54,76 +40,49 @@ export default function Home() {
 
   return (
     <div id="home-page">
-      {/* Hero Section */}
-      <section className="relative flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center px-6 text-center md:px-10">
-        <h1 className="mb-5 text-[42px] tracking-[-0.06em] md:text-[72px] lg:text-[96px]">
-          IdoWWW
-        </h1>
-        <div className="mb-2 text-lg text-body md:text-2xl">
-          UI/UX Designer &amp; Publishing
-        </div>
-        <div className="text-sm text-subtext">
-          Crafting digital experiences through code and design
-        </div>
-        <div className="pointer-events-none absolute bottom-10 text-sm text-neutral-500 animate-bounce">
-          ↓ Scroll to explore
-        </div>
+
+      {/* Hero */}
+      <section className="hero">
+        <h1>idoWWW</h1>
+        <div className="subtitle">UI/UX 디자인부터 웹퍼블리싱까지</div>
+        <div className="description">웹 하는 사람</div>
+        <div className="scroll-indicator">↓ Scroll to explore</div>
       </section>
 
-      {/* Featured Works */}
-      <section className="mx-auto max-w-7xl px-4 py-20">
-        <h2 className="mb-12 text-center text-[32px] font-light md:mb-16 md:text-[40px] lg:text-[48px]">
-          Selected Works
-        </h2>
+      {/* Selected Works */}
+      <section className="featured-works">
+        <h2 className="section-title">Selected Works</h2>
 
         {loading && (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <article key={i} className="card-portfolio card--list animate-pulse">
-                <div className="card-media bg-neutral/10" />
-                <div className="card-body space-y-2">
-                  <div className="h-3 w-24 rounded bg-neutral/10" />
-                  <div className="h-4 w-40 rounded bg-neutral/10" />
-                  <div className="h-3 w-32 rounded bg-neutral/10" />
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="h-6 w-12 rounded-full bg-neutral/10" />
-                    <span className="h-6 w-10 rounded-full bg-neutral/10" />
-                  </div>
-                </div>
-              </article>
+          <div className="works-grid">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="skeleton" style={{ aspectRatio: "16/10" }} />
             ))}
           </div>
         )}
 
         {!loading && (error || selectedProjects.length === 0) && (
-          <div className="text-center text-sm text-neutral">
+          <p style={{ textAlign: "center", fontSize: "14px", color: "#999999" }}>
             표시할 대표 프로젝트가 없습니다.
-          </div>
+          </p>
         )}
 
         {!loading && !error && selectedProjects.length > 0 && (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="works-grid">
             {selectedProjects.map((p) => {
               const roleChips = Array.from(
-                new Set(
-                  (p.role ?? "").split(",").map((s) => s.trim()).filter(Boolean)
-                )
+                new Set((p.role ?? "").split(",").map((s) => s.trim()).filter(Boolean))
               );
               return (
-                <Link key={p.slug} to={`/projects/${p.slug}`} className="block">
-                  <article className="card-portfolio card--list">
-                    <div className="card-media">
-                      <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" />
-                    </div>
-                    <div className="card-body">
-                      <div className="text-sm text-neutral truncate" title={p.period}>{p.period}</div>
-                      <h2 className="text-xl font-semibold truncate" title={p.title}>{p.title}</h2>
-                      {p.impact && (
-                        <div className="text-sm text-primary/80 truncate" title={p.impact}>{p.impact}</div>
-                      )}
-                      <div className="mt-3 flex flex-wrap gap-2">
+                <Link key={p.slug} to={`/projects/${p.slug}`} style={{ textDecoration: "none" }}>
+                  <article className="work-card">
+                    <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" />
+                    <div className="work-overlay">
+                      <div className="work-overlay-title">{p.title}</div>
+                      <div className="work-overlay-meta">{p.period}</div>
+                      <div className="work-overlay-tags">
                         {roleChips.map((r) => (
-                          <span key={r} className="tag-chip">{r}</span>
+                          <span key={r} className="work-overlay-tag">{r}</span>
                         ))}
                       </div>
                     </div>
@@ -136,49 +95,27 @@ export default function Home() {
       </section>
 
       {/* Brief Introduction */}
-      <section className="mx-auto max-w-[800px] px-6 py-24 text-center md:px-10 md:py-32">
-        <h2 className="mb-10 text-[28px] font-light md:text-[32px] lg:text-[36px]">
-          Hello, I&apos;m idoWWW
-        </h2>
-        <p className="mb-10 text-body leading-relaxed md:text-lg">
-          I'm a creative developer based in Seoul, specializing in translating
-          ideas into elegant digital solutions. With a background in both design
-          and development, I bridge the gap between aesthetics and functionality.
+      <section className="brief-intro">
+        <h2 className="section-title">Hello, I'm idoWWW</h2>
+        <p>
+          디자이너와 개발자 사이, 의도를 기술 언어로 정리해 프로젝트를 완성하는 20년 경력의 웹 하는 사람입니다.<br/> 
+          기준을 세우고 실행합니다.
         </p>
-        <Link
-          to="/about"
-          className="inline-block border border-primary px-10 py-4 text-sm font-medium transition-colors hover:bg-primary hover:text-white"
-        >
-          More About Me →
-        </Link>
+        <Link to="/about" className="btn">More About Me →</Link>
       </section>
 
-      {/* Contact Section */}
-      <section className="bg-muted/40 px-6 py-24 text-center md:px-10 md:py-32">
-        <h2 className="mb-8 text-[32px] font-light md:text-[40px] lg:text-[48px]">
-          Let&apos;s work together
-        </h2>
-        <a
-          href="mailto:idowww11@gmail.com"
-          className="mb-10 inline-block text-2xl text-primary transition-opacity hover:opacity-70"
-        >
-          idowww11@gmail.com
-        </a>
-
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral">
-          {SNS_LINKS.filter((s) => s.href).map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              className="transition-colors hover:text-primary"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {label}
-            </a>
-          ))}
+      {/* Contact */}
+      <section className="contact-section">
+        <h2 className="section-title">Let's work together</h2>
+        <a href="mailto:idowww11@gmail.com" className="contact-email">idowww11@gmail.com</a>
+        <div className="social-links">
+          <a href="https://linkedin.com/in/idowww" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://github.com/jiminihi" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://behance.net/idowww" target="_blank" rel="noreferrer">Behance</a>
+          <a href="https://instagram.com/idowww" target="_blank" rel="noreferrer">Instagram</a>
         </div>
       </section>
+
     </div>
   );
 }

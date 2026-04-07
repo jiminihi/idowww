@@ -721,9 +721,6 @@ export default function About() {
             <div className="mb-2 text-sm uppercase tracking-[0.18em] text-neutral">
               UI/UX Designer &amp; Publishing
             </div>
-            <div className="mb-8 text-xs font-medium text-neutral/80">
-              프리랜서 프로젝트 진행 가능
-            </div>
 
             <div className="space-y-3 text-sm leading-relaxed text-primary/90 md:text-body">
               <p>
@@ -962,10 +959,10 @@ export default function About() {
             언제나 열려 있습니다.
           </p>
           <a
-            href="mailto:hello@idowww.com"
+            href="mailto:idowww11@gmail.com"
             className="mb-6 inline-block text-xl text-primary transition-opacity hover:opacity-60"
           >
-            hello@idowww.com
+            idowww11@gmail.com
           </a>
 
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-neutral md:text-sm">
@@ -1286,7 +1283,7 @@ export default function Home() {
         </h2>
 
         <a
-          href="mailto:hello@idowww.com"
+          href="mailto:idowww11@gmail.com"
           className="
             mb-10 inline-block
             text-2xl
@@ -1295,7 +1292,7 @@ export default function Home() {
             hover:opacity-70
           "
         >
-          hello@idowww.com
+          idowww11@gmail.com
         </a>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-neutral">

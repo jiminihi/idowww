@@ -1,169 +1,142 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useProjectsData } from "../utils/useProjectsData";
 
 export default function ProjectDetail() {
-  const { slug } = useParams();
-  const navigate = useNavigate();
+  const { slug }   = useParams();
+  const navigate   = useNavigate();
   const { projects, loading } = useProjectsData();
-  const { revealed } = useScrollReveal();
   const [imgFailed, setImgFailed] = useState(false);
 
+  // ── 로딩 ──
   if (loading || !projects) {
     return (
-      <div className="mx-auto max-w-4xl py-16 px-4">
-        <div className="mb-6 h-8 w-2/3 animate-pulse rounded bg-neutral/30" />
-        <div className="mb-10 grid gap-4 sm:grid-cols-3">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-16 animate-pulse rounded-xl border bg-neutral/10" />
+      <div className="detail-page">
+        <div className="skeleton" style={{ height: "36px", width: "60%", marginBottom: "40px" }} />
+        <div className="detail-meta-grid">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="detail-meta-item">
+              <div className="skeleton" style={{ height: "14px", width: "40%", marginBottom: "8px" }} />
+              <div className="skeleton" style={{ height: "18px", width: "70%" }} />
+            </div>
           ))}
         </div>
-        <div className="aspect-video w-full animate-pulse rounded-xl bg-neutral/20" />
+        <div className="skeleton" style={{ aspectRatio: "16/9", width: "100%" }} />
       </div>
     );
   }
 
-  const project = projects.find((p) => p.slug === slug) || null;
+  const project = projects.find((p) => p.slug === slug) ?? null;
 
+  // ── 404 ──
   if (!project) {
     return (
-      <div className="mx-auto max-w-4xl py-20 px-4">
-        <p className="mb-8 text-xl font-semibold">프로젝트를 찾을 수 없습니다.</p>
-        <button
-          onClick={() => navigate(-1)}
-          className="rounded border px-4 py-2 transition hover:bg-neutral/10"
-        >
-          이전 페이지로
-        </button>
+      <div className="detail-page">
+        <p style={{ fontSize: "20px", fontWeight: 500, marginBottom: "32px" }}>
+          프로젝트를 찾을 수 없습니다.
+        </p>
+        <button className="btn-sm" onClick={() => navigate(-1)}>← Back</button>
       </div>
     );
   }
 
   return (
-    <>
-      {/* Sticky header — ✅ 다크모드 배경 추가 */}
-      <div className={`sticky ${revealed ? "top-16" : "top-0"} z-40 w-full`}>
-        <div className="h-12 border-b border-neutral/15 bg-white/70 backdrop-blur dark:bg-base-dark/80">
-          <div className="mx-auto max-w-7xl h-full px-4 md:px-6 lg:px-8 flex items-center gap-3">
-            <button
-              onClick={() => navigate(-1)}
-              className="rounded border border-neutral/30 px-3 py-1 text-sm transition hover:bg-neutral/10 dark:border-neutral-dark/30"
-            >
-              ← Back
-            </button>
-          </div>
+    <div className="detail-page">
+
+      {/* 뒤로가기 */}
+      <div className="detail-back-bar">
+        <button className="btn-sm" onClick={() => navigate(-1)}>← Back</button>
+      </div>
+
+      {/* 고객사 */}
+      {project.client && (
+        <div className="detail-client">{project.client}</div>
+      )}
+
+      {/* 제목 */}
+      <h1 className="detail-title">{project.title}</h1>
+
+      {/* 메타 그리드 */}
+      <div className="detail-meta-grid">
+        <div className="detail-meta-item">
+          <div className="detail-meta-label">기간</div>
+          <div className="detail-meta-value">{project.period}</div>
+        </div>
+        <div className="detail-meta-item">
+          <div className="detail-meta-label">역할</div>
+          <div className="detail-meta-value">{project.role}</div>
+          {project.parsedPositions.length > 0 && (
+            <div style={{ marginTop: "8px", display: "flex", flexWrap: "wrap", gap: "6px" }}>
+              {project.parsedPositions.map((pos) => (
+                <span key={pos} className="tag-chip">{pos}</span>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="detail-meta-item">
+          <div className="detail-meta-label">소속</div>
+          <div className="detail-meta-value">{project.affiliation || "–"}</div>
         </div>
       </div>
 
-      <div className="mx-auto max-w-4xl py-16 px-4">
-        {/* Client */}
-        {project.client && (
-          <div className="mb-1 text-[clamp(18px,1.25vw,20px)] leading-[1.5] text-neutral">
-            {project.client}
-          </div>
-        )}
-
-        {/* Title */}
-        <h1 className="mb-4 text-h1 font-condor">{project.title}</h1>
-
-        {/* 기간 / 역할 / 소속 */}
-        <div className="mb-10 grid gap-4 sm:grid-cols-3">
-          <div className="card-portfolio card--detail">
-            <div className="card-body">
-              <div className="text-sm text-neutral">기간</div>
-              <div className="mt-1 font-semibold truncate">{project.period}</div>
-            </div>
-          </div>
-
-          <div className="card-portfolio card--detail">
-            <div className="card-body">
-              <div className="text-sm text-neutral">역할</div>
-              <div className="mt-1 font-semibold truncate">{project.role}</div>
-              {project.parsedPositions.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {project.parsedPositions.map((pos) => (
-                    <span key={pos} className="tag-chip">{pos}</span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="card-portfolio card--detail">
-            <div className="card-body">
-              <div className="text-sm text-neutral">소속</div>
-              <div className="mt-1 font-semibold truncate">
-                {project.affiliation || "-"}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 태그 */}
-        <div className="mb-10 flex flex-wrap gap-2">
+      {/* 태그 */}
+      {project.parsedTags.length > 0 && (
+        <div className="detail-tags">
           {project.parsedTags.map((tag) => (
-            <span key={tag} className="tag-chip">{tag}</span>
+            <span key={tag} className="detail-tag">{tag}</span>
           ))}
         </div>
+      )}
 
-        {/* 썸네일 */}
-        {project.thumbnail?.trim() && !imgFailed && (
-          <div className="device-bleed mb-10">
-            <div className="aspect-video w-full overflow-hidden">
-              <img
-                src={project.thumbnail}
-                alt={project.title}
-                className="block h-full w-full object-cover"
-                loading="lazy"
-                onError={() => setImgFailed(true)}
-              />
-            </div>
+      {/* 썸네일 */}
+      {project.thumbnail?.trim() && !imgFailed && (
+        <div className="detail-thumbnail device-bleed">
+          <img
+            src={project.thumbnail}
+            alt={project.title}
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+          />
+        </div>
+      )}
+
+      {/* 설명 */}
+      {project.description && (
+        <p className="detail-description">{project.description}</p>
+      )}
+
+      {/* 수상내역 */}
+      {project.parsedAwards?.length > 0 && (
+        <div className="detail-section">
+          <h2>🏆 수상내역</h2>
+          <ul>
+            {project.parsedAwards.map((aw, i) => (
+              <li key={i}>{aw}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* 링크 */}
+      {project.parsedUrls.length > 0 && (
+        <div className="detail-section">
+          <h2>⚓ Links</h2>
+          <div className="detail-links-wrap">
+            {project.parsedUrls.map((u, i) => (
+              <a
+                key={i}
+                href={u.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-sm"
+              >
+                {u.label}
+              </a>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Description */}
-        <p className="whitespace-pre-line text-body leading-relaxed text-primary/90">
-          {project.description}
-        </p>
-
-        {/* Awards */}
-        {project.parsedAwards && project.parsedAwards.length > 0 && (
-          <div className="mt-12">
-            <h2 className="mb-4 text-xl font-semibold text-primary">🏆 수상내역</h2>
-            <ul className="space-y-2 text-sm leading-relaxed text-primary/90">
-              {project.parsedAwards.map((aw, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="mt-2 size-1.5 rounded-full bg-primary/60" />
-                  <span>{aw}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Related Links */}
-        {project.parsedUrls.length > 0 && (
-          <div className="mt-16">
-            <h2 className="mb-4 text-xl font-semibold text-primary">⚓ Links</h2>
-            <div className="flex flex-wrap gap-4">
-              {project.parsedUrls.map((u, i) => (
-                <a
-                  key={i}
-                  href={u.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded border px-4 py-2 text-sm
-                             transition bg-surface hover:bg-neutral/10
-                             dark:bg-surface-dark dark:border-neutral-dark/30"
-                >
-                  {u.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+    </div>
   );
 }

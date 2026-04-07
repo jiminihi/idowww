@@ -1,398 +1,235 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
-import type { Resume } from "../types/resume";
+import { useEffect, useState } from "react";
+
+// ── 구글 시트 연동 ───────────────────────────────────────────────────────────
+const SHEET_ID   = "18a_8ZZu5eHhhkaWzc3hJcgYoxnqrQJkF9KJj8swslCM";
+const SHEET_BASE = `https://opensheet.elk.sh/${SHEET_ID}`;
+
+type RawExperience = {
+  company: string; role: string; start: string; end?: string;
+  location?: string; summary?: string; achievements?: string; stack?: string;
+};
+type RawEducation = { school: string; degree?: string; start?: string; end?: string; note?: string };
+type RawSkill     = { category: string; items: string };
+type Experience   = {
+  company: string; role: string; start: string; end?: string;
+  location?: string; summary?: string; achievements: string[]; stack: string[];
+};
+type Education    = { school: string; degree?: string; start?: string; end?: string; note?: string };
+type SkillGroup   = { category: string; items: string[] };
+type ResumeData   = { experience: Experience[]; education: Education[]; skills: SkillGroup[] };
+
+const splitLines = (s?: string) => s ? s.split(/\n/).map((l) => l.trim()).filter(Boolean) : [];
+const splitCsv   = (s?: string) => s ? s.split(",").map((l) => l.trim()).filter(Boolean) : [];
+const fmt = (s?: string) => s ? s.replace("-", ".") : "";
+const formatPeriod = (start: string, end?: string) =>
+  end && end.trim() ? `${fmt(start)} – ${fmt(end)}` : `${fmt(start)} – 현재`;
+
+async function fetchResumeFromSheet(): Promise<ResumeData> {
+  const [expRaw, eduRaw, skillRaw] = await Promise.all([
+    fetch(`${SHEET_BASE}/experience`).then((r) => r.json()) as Promise<RawExperience[]>,
+    fetch(`${SHEET_BASE}/education`).then((r)  => r.json()) as Promise<RawEducation[]>,
+    fetch(`${SHEET_BASE}/skills`).then((r)     => r.json()) as Promise<RawSkill[]>,
+  ]);
+  const experience: Experience[] = expRaw
+    .filter((r) => r.company && r.role && r.start)
+    .map((r) => ({
+      company: r.company, role: r.role, start: r.start,
+      ...(r.end      && { end: r.end }),
+      ...(r.location && { location: r.location }),
+      ...(r.summary  && { summary: r.summary }),
+      achievements: splitLines(r.achievements),
+      stack: splitCsv(r.stack),
+    }));
+  return {
+    experience,
+    education: eduRaw.filter((e) => e.school),
+    skills: skillRaw.filter((s) => s.category).map((s) => ({
+      category: s.category, items: splitCsv(s.items),
+    })),
+  };
+}
+
+// ── 폴백 데이터 ──────────────────────────────────────────────────────────────
+const FALLBACK: ResumeData = {
+  experience: [
+    { company: "한봄스튜디오", role: "퍼블리싱팀 팀장", start: "2020-03", end: "2025-05", location: "서울",
+      summary: "최대 5명 규모의 퍼블리싱팀을 리딩하며 산출물 기준·코딩 컨벤션 수립.",
+      achievements: ["최대 5명 규모 퍼블리싱팀 리딩 및 코딩 컨벤션 수립", "코딩 컨벤션·업무 프로세스·협업 가이드 매뉴얼화로 온보딩 시간 단축", "삼성·LG전자·현대자동차 등 대형 클라이언트 프로젝트 다수 수행"], stack: ["HTML", "CSS", "JavaScript"] },
+    { company: "주식회사 비즈니스인사이트", role: "ICT팀 과장 / 디자인 & 퍼블리싱", start: "2016-04", end: "2019-12", location: "서울",
+      achievements: ["이랜드닷 BackOffice 구축", "FreshMan App 구축 및 운영", "TaxFreeMall App / SSGFOOD KIOSK UI Design & Publishing", "장보자닷컴 구축"], stack: ["Figma", "HTML", "CSS", "JavaScript"] },
+    { company: "(주)브레이브이노베이션", role: "TX실 PE팀 책임 / 퍼블리싱", start: "2013-05", end: "2013-08", location: "서울", achievements: ["SSG.com 구축", "KT&G 상상UNIV 모바일 리뉴얼"], stack: [] },
+    { company: "(주)엠피알디", role: "SI사업부 개발팀 대리 / 퍼블리싱", start: "2012-08", end: "2012-12", location: "서울", achievements: ["BMW, SK플래닛, 롯데백화점 등 다수 SI 프로젝트 퍼블리싱"], stack: [] },
+    { company: "(주)소프트아이", role: "SI사업부 과장 / 디자인 & 퍼블리싱", start: "2011-11", end: "2012-04", location: "서울", achievements: ["퍼블리싱 가이드 제작 및 디자이너 대상 퍼블리싱 교육", "외국인고용관리시스템 구축", "우수숙련종합정보망 구축"], stack: [] },
+    { company: "(주)연일커뮤니케이션", role: "디자인팀 대리 / 디자인 & 퍼블리싱", start: "2010-12", end: "2011-09", location: "서울", achievements: [], stack: [] },
+    { company: "(주)한경닷컴", role: "개발팀 사원 / 디자인 & 퍼블리싱", start: "2007-02", end: "2010-05", location: "서울", achievements: ["한경닷컴 유지보수, 한국경제 주식왕·증권·재테크·골프 리뉴얼 등 다수 수행"], stack: [] },
+    { company: "(주)다리커뮤니케이션", role: "사원 / 디자인 & 퍼블리싱", start: "2005-10", end: "2007-02", location: "서울", achievements: ["골프용품닷컴 운영디자인 및 리뉴얼", "랭스필드 운영디자인"], stack: [] },
+  ],
+  education: [
+    { school: "한국사이버대학교", degree: "디지털디자인학과", start: "2008-03", end: "2014-02" },
+    { school: "김해한일여자상업고등학교", degree: "정보처리과", start: "1996-03", end: "1999-02" },
+  ],
+  skills: [
+    { category: "Design",      items: ["UI/UX 디자인", "반응형 웹 디자인", "모바일 앱 UI", "키오스크 UI", "디자인 시스템", "브랜드 아이덴티티"] },
+    { category: "Publishing",  items: ["HTML5 / CSS3", "웹표준 & 웹접근성", "크로스브라우징", "퍼블리싱 가이드 제작", "코딩 컨벤션 수립", "PC·모바일·앱·하이브리드"] },
+    { category: "Tools & Dev", items: ["Figma / Adobe CC", "React / Vue", "JavaScript / TypeScript", "클라우드 기반 AI 서비스", "Git / GitHub", "Notion / Jira"] },
+  ],
+};
 
 const PROFILE_PLACEHOLDER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23f0f0f0' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='20'%3EProfile Image%3C/text%3E%3C/svg%3E";
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23FAFAFA' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='20'%3EProfile Image%3C/text%3E%3C/svg%3E";
 
-// ─── SNS 링크 ────────────────────────────────────────────────
-// TODO: 실제 프로필 URL로 교체하세요
-const SNS_LINKS = [
-  { label: "LinkedIn — linkedin.com/in/idowww",  href: "https://linkedin.com/in/idowww" }, // 예: "https://linkedin.com/in/idowww"
-  { label: "GitHub — github.com/idowww",          href: "https://github.com/idowww" }, // 예: "https://github.com/idowww"
-  { label: "Codepen — codepen.io/idowww",          href: "https://codepen.io/idowww" }, // 예: "https://codepen.io/idowww"
-  { label: "Behance — behance.net/idowww",        href: "https://behance.net/idowww" }, // 예: "https://behance.net/idowww"
-  { label: "Instagram — @idowww", href: "https://instagram.com/idowww" }, // 예: "https://instagram.com/idowww"
-] as const;
+const CERTIFICATIONS = [
+  { name: "웹디자인기능사",    org: "산업인력관리공단", date: "2006.12.29" },
+  { name: "정보기기운용기능사", org: "산업인력관리공단", date: "1998.07.22" },
+  { name: "부기 2급",          org: "대한상공회의소",   date: "1998.05.28" },
+  { name: "워드프로세서 2급",  org: "대한상공회의소",   date: "1996.12.06" },
+];
 
+const WHAT_I_DO = [
+  { num: "01.", title: "Web Publishing",       desc: "웹표준·접근성을 준수하며 PC웹·모바일웹·앱·하이브리드앱·키오스크 등 다양한 플랫폼에서 사용자 중심 퍼블리싱을 수행합니다. 퍼블리싱 가이드 제작과 코딩 컨벤션 수립으로 팀 품질의 일관성을 확보합니다." },
+  { num: "02.", title: "UI/UX Design",         desc: "사용성과 미학에 중점을 둔 웹사이트 및 앱 인터페이스를 제작합니다. GDWEB DESIGN AWARDS 등 다수의 디자인 어워드 수상 프로젝트에 퍼블리셔로 참여한 경험을 보유하고 있습니다." },
+  // { num: "03.", title: "Project Coordination", desc: "디자이너가 제안한 아이디어의 기술적 구현 가능성을 검토하고, 개발자에게는 디자인 의도를 명확히 전달하는 중간 조율자 역할을 합니다." },
+  { num: "03.", title: "Team Leadership",      desc: "5년간 퍼블리싱팀을 리딩하며 체계를 만들었습니다. 코딩 컨벤션·업무 프로세스·협업 가이드·보고 체계를 매뉴얼로 정리해 팀원 온보딩 시간을 단축하고 코드 품질의 일관성을 확보했습니다." },
+];
+
+// ── 컴포넌트 ─────────────────────────────────────────────────────────────────
 export default function About() {
-  const [resume, setResume] = useState<Resume | null>(null);
+  const [resume, setResume]   = useState<ResumeData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  const resumePath = useMemo(() => "/data/resume.json", []);
-
-  const fetchResume = useCallback(
-    async (signal?: AbortSignal) => {
-      try {
-        const r = await fetch(resumePath, { cache: "no-store", signal });
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        const data: Resume = await r.json();
-        setResume(data);
-        setError(null);
-      } catch (err: unknown) {
-        if ((err as { name?: string })?.name !== "AbortError") {
-          setError(err instanceof Error ? err : new Error(String(err)));
-        }
-      } finally {
-        setLoading(false);
-      }
-    },
-    [resumePath]
-  );
-
-  const retry = () => {
-    setLoading(true);
-    setError(null);
-    void fetchResume();
-  };
 
   useEffect(() => {
-    const ctrl = new AbortController();
-    void fetchResume(ctrl.signal);
-    return () => ctrl.abort();
-  }, [fetchResume]);
+    fetchResumeFromSheet()
+      .then((data) => setResume(data))
+      .catch(() => setResume(FALLBACK))
+      .finally(() => setLoading(false));
+  }, []);
 
-  const sortedExp = useMemo(() => {
-    if (!resume?.experience) return [];
-    const parse = (s?: string) => (s ? Date.parse(s) : 0);
-    return [...resume.experience].sort((a, b) => {
-      const ae = parse(a.end) || parse(a.start);
-      const be = parse(b.end) || parse(b.start);
-      return be - ae;
-    });
-  }, [resume]);
-
-  const formatPeriod = (start: string, end?: string) =>
-    end && end.trim() ? `${start} – ${end}` : `${start} – Present`;
+  const data = resume ?? FALLBACK;
+  const sortedExp = [...data.experience].sort((a, b) => {
+    const toMs = (s?: string) => s ? new Date(s).getTime() : 99999999999;
+    return (b.end ? toMs(b.end) : 99999999999) - (a.end ? toMs(a.end) : 99999999999);
+  });
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
-        <div className="mb-10 h-8 w-32 animate-pulse rounded bg-neutral/20" />
-        <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
-          <div className="aspect-[4/5] w-full animate-pulse rounded-2xl bg-neutral/15" />
-          <div className="space-y-4">
-            <div className="h-7 w-40 animate-pulse rounded bg-neutral/20" />
-            <div className="h-4 w-48 animate-pulse rounded bg-neutral/15" />
-            <div className="h-3 w-32 animate-pulse rounded bg-neutral/10" />
-            <div className="mt-4 space-y-3">
-              <div className="h-4 w-full animate-pulse rounded bg-neutral/10" />
-              <div className="h-4 w-5/6 animate-pulse rounded bg-neutral/10" />
-              <div className="h-4 w-4/6 animate-pulse rounded bg-neutral/10" />
-            </div>
-            <div className="mt-6 h-10 w-40 animate-pulse rounded-full bg-neutral/15" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
-        <h1 className="mb-2 text-2xl font-semibold text-primary">About</h1>
-        <p className="mb-6 text-sm text-red-600">
-          데이터를 불러오는 중 오류가 발생했습니다. ({error.message})
-        </p>
-        <button
-          type="button"
-          onClick={retry}
-          className="rounded border bg-surface px-4 py-2 text-sm transition hover:bg-neutral/10"
-        >
-          다시 시도
-        </button>
-      </div>
-    );
-  }
-
-  if (!resume) {
-    return (
-      <div className="mx-auto max-w-4xl px-6 py-16 md:px-10 md:py-24">
-        <h1 className="mb-2 text-2xl font-semibold text-primary">About</h1>
-        <p className="mb-6 text-sm text-neutral">
-          표시할 데이터가 없습니다.{" "}
-          <code>public/data/resume.json</code>을 확인한 뒤 다시 시도하세요.
-        </p>
-        <button
-          type="button"
-          onClick={retry}
-          className="rounded border bg-surface px-4 py-2 text-sm transition hover:bg-neutral/10"
-        >
-          다시 시도
-        </button>
+      <div className="experience-section">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="skeleton" style={{ height: "20px", marginBottom: "16px" }} />
+        ))}
       </div>
     );
   }
 
   return (
-    // bg-white 하드코딩 제거 → 테마 토큰 사용
-    <div className="bg-base text-primary dark:bg-base-dark dark:text-primary-dark">
-      <div className="mx-auto max-w-5xl px-6 py-16 md:px-10 md:py-24">
+    <div id="about-page">
 
-        {/* Profile Section */}
-        <section className="mb-16 grid gap-10 md:mb-24 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:items-start">
-          <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral/10">
-            <img
-              src={PROFILE_PLACEHOLDER}
-              alt="Profile"
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
+      {/* Profile */}
+      <section className="profile-section">
+        <div className="profile-image">
+          <img src={PROFILE_PLACEHOLDER} alt="김주연 프로필" />
+        </div>
+        <div className="profile-content">
+          <h1>김주연</h1>
+          <div className="role">UI/UX Designer &amp; Web Publisher</div>
+          <div className="status">구직중</div>
+          <p>20년간 웹디자인·웹퍼블리싱 실무를 수행하며 기획–디자인–구현–검수 흐름을 이해하고, 디자이너와 개발자 사이에서 의도를 기술 언어로 정리해 프로젝트 완성도를 높여 왔습니다.</p>
+          <p>취미로 시작한 웹디자인이 직업이 되었고, 웹표준과 접근성에 관심을 가지며 퍼블리싱 전문성을 더했습니다. 최근에는 클라우드 기반 AI 대화형 서비스 웹개발자 양성 교육과정을 수료하며 프론트엔드·백엔드 구조 이해까지 확장했습니다.</p>
+          <p>삼성·LG·현대자동차 등 대기업 프로젝트부터 다양한 스타트업까지, IT·테크·금융·유통·제조·법률·의료·게임·교육·공공 등 다양한 산업 분야에서 경험을 쌓았습니다.</p>
+          <div className="cv-download">
+            <a href="/data/IdoWWW_Resume.pdf" className="btn">이력서 다운로드</a>
           </div>
+        </div>
+      </section>
 
-          <div className="profile-content">
-            <h1 className="mb-2 text-[32px] font-light tracking-tight md:text-[40px]">
-              idoWWW
-            </h1>
-            <div className="mb-2 text-sm uppercase tracking-[0.18em] text-neutral">
-              UI/UX Designer &amp; Publishing
+      {/* Skills */}
+      <section className="skills-section">
+        <h2 className="section-title">Skills &amp; Expertise</h2>
+        <div className="skills-grid">
+          {data.skills.map((sg) => (
+            <div key={sg.category} className="skill-column">
+              <h3>{sg.category}</h3>
+              <ul className="skill-list">
+                {sg.items.map((item) => <li key={item}>{item}</li>)}
+              </ul>
             </div>
-            <div className="mb-8 text-xs font-medium text-neutral/80">
-              프리랜서 프로젝트 진행 가능
-            </div>
+          ))}
+        </div>
+      </section>
 
-            <div className="space-y-3 text-sm leading-relaxed text-primary/90 md:text-body">
-              <p>
-                서울을 기반으로 활동하는 UI/UX 디자이너이자 퍼블리셔로, 사려
-                깊은 디지털 경험을 만드는 데 집중하고 있습니다.
-              </p>
-              <p>
-                디자인과 개발을 모두 경험해본 덕분에, 시각적인 완성도와
-                인터랙션, 그리고 퍼포먼스를 함께 고려한 웹사이트와
-                애플리케이션을 만드는 일을 좋아합니다.
-              </p>
-              <p>
-                깔끔한 미학과 기능적 디자인의 접점을 탐색하면서, 항상 최종
-                사용자를 프로세스의 중심에 두는 것을 원칙으로 삼습니다.
-              </p>
-              <p>
-                창의성과 기술, 그리고 문제 해결에 대한 호기심이 만나는 지점에서
-                좋은 결과물이 나온다고 믿습니다.
-              </p>
+      {/* Experience */}
+      <section className="experience-section">
+        <h2 className="section-title">Experience</h2>
+        {sortedExp.map((e, idx) => (
+          <div key={`${e.company}-${idx}`} className="experience-item">
+            <div className="experience-date">{formatPeriod(e.start, e.end)}</div>
+            <div className="experience-content">
+              <h3>{e.role}</h3>
+              <div className="company">{e.company}{e.location ? ` / ${e.location}` : ""}</div>
+              {e.summary && <p className="experience-summary">{e.summary}</p>}
+              {e.achievements.length > 0 && (
+                <ul>{e.achievements.map((a, i) => <li key={i}>{a}</li>)}</ul>
+              )}
             </div>
+          </div>
+        ))}
+      </section>
 
-            {resume.highlights?.length ? (
-              <div className="mt-6 flex flex-wrap gap-2">
-                {resume.highlights.map((h) => (
-                  <span key={h.slug} className="tag-chip">
-                    {h.title}
-                  </span>
-                ))}
+      {/* Education & Certifications */}
+      <section className="edu-cert-section">
+        <div className="edu-cert-grid">
+          <div>
+            <h2 className="edu-sub-title">Education</h2>
+            {data.education.map((ed, i) => (
+              <div key={i} className="edu-item">
+                <div className="edu-school">{ed.school}</div>
+                {ed.degree && <div className="edu-degree">{ed.degree}</div>}
+                {(ed.start || ed.end) && (
+                  <div className="edu-period">{fmt(ed.start)}{ed.end ? ` – ${fmt(ed.end)}` : ""}</div>
+                )}
               </div>
-            ) : null}
-
-            <div className="mt-8">
-              <a
-                href="/data/IdoWWW_Resume.pdf"
-                className="inline-block border border-primary px-8 py-3 text-sm transition-colors hover:bg-primary hover:text-white"
-              >
-                이력서 다운로드
-              </a>
-            </div>
+            ))}
           </div>
-        </section>
-
-        {/* Skills Section */}
-        <section className="mb-16 rounded-3xl bg-neutral/5 px-6 py-12 md:mb-24 md:px-10 md:py-16">
-          <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
-            Skills &amp; Expertise
-          </h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            {resume.skills?.length
-              ? resume.skills.map((sg) => (
-                  <div key={sg.category}>
-                    <h3 className="mb-4 border-b border-primary/40 pb-3 text-sm font-semibold uppercase tracking-[0.14em] text-neutral">
-                      {sg.category}
-                    </h3>
-                    <ul className="space-y-2 text-sm leading-relaxed text-primary/90">
-                      {sg.items.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
+          <div>
+            <h2 className="edu-sub-title">Certifications</h2>
+            <ul className="cert-list">
+              {CERTIFICATIONS.map((c, i) => (
+                <li key={i} className="cert-item">
+                  <div>
+                    <div className="cert-name">{c.name}</div>
+                    <div className="cert-org">{c.org}</div>
                   </div>
-                ))
-              : null}
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        {sortedExp.length ? (
-          <section className="mb-16 md:mb-24">
-            <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
-              Experience
-            </h2>
-            <div className="space-y-10">
-              {sortedExp.map((e, idx) => (
-                <article
-                  key={`${e.company}-${e.role}-${idx}`}
-                  className="border-b border-neutral/20 pb-10 last:border-b-0 last:pb-0"
-                >
-                  <div className="grid gap-6 md:grid-cols-[160px_minmax(0,1fr)] md:gap-10">
-                    <div className="text-xs uppercase tracking-[0.16em] text-neutral">
-                      <div>{formatPeriod(e.start, e.end)}</div>
-                      {e.location && (
-                        <div className="mt-2 text-[11px] text-neutral/80">
-                          {e.location}
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="mb-1 text-base font-semibold md:text-lg">
-                        {e.role}
-                      </h3>
-                      <div className="mb-4 text-sm text-neutral">
-                        {e.company}
-                        {e.location ? ` / ${e.location}` : ""}
-                      </div>
-                      {e.summary && (
-                        <p className="mb-3 whitespace-pre-line text-sm leading-relaxed text-primary/90">
-                          {e.summary}
-                        </p>
-                      )}
-                      {e.achievements?.length ? (
-                        <ul className="mb-3 space-y-1.5 text-sm leading-relaxed text-primary/90">
-                          {e.achievements.map((a, i) => (
-                            <li key={i} className="flex gap-2">
-                              <span className="mt-1 inline-block h-1 w-1 rounded-full bg-primary/70" />
-                              <span>{a}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                      {e.stack?.length ? (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {e.stack.map((s) => (
-                            <span key={s} className="tag-chip">{s}</span>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        {/* Education */}
-        {resume.education?.length ? (
-          <section className="mb-16 md:mb-24">
-            <h2 className="mb-6 text-[24px] font-semibold text-primary">
-              Education
-            </h2>
-            <ul className="space-y-4">
-              {resume.education.map((ed, i) => (
-                <li
-                  key={`${ed.school}-${i}`}
-                  className="rounded-2xl border border-neutral/20 px-5 py-4"
-                >
-                  <div className="text-sm font-semibold text-primary">{ed.school}</div>
-                  {(ed.degree || ed.note) && (
-                    <div className="mt-1 text-xs text-neutral">
-                      {[ed.degree, ed.note].filter(Boolean).join(" · ")}
-                    </div>
-                  )}
-                  {(ed.start || ed.end) && (
-                    <div className="mt-1 text-xs text-neutral/80">
-                      {ed.start ?? ""}{" "}
-                      {ed.end ? `– ${ed.end}` : ed.start ? "–" : ""}
-                    </div>
-                  )}
+                  <div className="cert-date">{c.date}</div>
                 </li>
               ))}
             </ul>
-          </section>
-        ) : null}
-
-        {/* Services Section */}
-        <section className="mb-16 rounded-3xl bg-neutral/5 px-6 py-12 md:mb-24 md:px-10 md:py-16">
-          <h2 className="mb-10 text-center text-[28px] font-light md:text-[32px]">
-            What I Do
-          </h2>
-          <div className="space-y-10">
-            {[
-              {
-                num: "01.",
-                title: "Web Design",
-                desc: "사용성과 미학에 중점을 둔 웹사이트 및 웹 애플리케이션을 위한 현대적이고 사용자 중심적인 인터페이스를 제작합니다.",
-              },
-              {
-                num: "02.",
-                title: "Frontend Development",
-                desc: "최신 프레임워크와 웹 개발의 모범 사례를 활용하여 반응형이며 성능이 우수한 웹사이트를 구축합니다.",
-              },
-              {
-                num: "03.",
-                title: "UI/UX Consulting",
-                desc: "사용자 경험 전략, 인터페이스 디자인 및 인터랙션 패턴에 대한 전문적인 가이드를 제공합니다.",
-              },
-              {
-                num: "04.",
-                title: "Design Systems",
-                desc: "디지털 제품 전반에 걸쳐 일관성과 확장성을 보장하는 포괄적인 디자인 시스템을 개발합니다.",
-              },
-            ].map(({ num, title, desc }) => (
-              <div key={num} className="service-item">
-                <h3 className="mb-3 text-xl font-medium">
-                  <span className="mr-3 text-neutral/60">{num}</span>
-                  {title}
-                </h3>
-                <p className="text-sm leading-relaxed text-primary/90">{desc}</p>
-              </div>
-            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Personal Section */}
-        <section className="mb-16 md:mb-24">
-          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">일상의 모습</h2>
-          <p className="mb-5 text-sm leading-relaxed text-primary/90">
-            디자인하거나 코딩하지 않을 때는 이런 것들을 즐깁니다:
-          </p>
-          <ul className="space-y-2 text-sm leading-relaxed text-primary/90">
-            <li>아날로그 사진 촬영</li>
-            <li>디자인 철학에 관한 독서</li>
-            <li>새로운 요리 레시피 실험</li>
-            <li>도시를 걸으며 산책하기</li>
-          </ul>
-        </section>
-
-        {/* Contact Section */}
-        <section className="rounded-3xl bg-neutral/5 px-6 py-12 text-center md:px-10 md:py-16">
-          <h2 className="mb-6 text-[28px] font-light md:text-[32px]">함께 해요</h2>
-          <p className="mx-auto mb-6 max-w-xl text-sm leading-relaxed text-primary/90">
-            새로운 프로젝트, 창의적인 아이디어 또는 비전을 함께할 기회에 대해
-            언제나 열려 있습니다.
-          </p>
-          {/* mailto: 앞 탭 문자 제거 */}
-          <a
-            href="mailto:idowww11@gmail.com"
-            className="mb-6 inline-block text-xl text-primary transition-opacity hover:opacity-60"
-          >
-            idowww11@gmail.com
-          </a>
-
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-neutral md:text-sm">
-            {SNS_LINKS.filter((s) => s.href).map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-primary"
-              >
-                {label}
-              </a>
-            ))}
-            {/* SNS URL이 모두 비어있을 때 임시 안내 */}
-            {SNS_LINKS.every((s) => !s.href) && (
-              <span className="text-neutral/50 text-xs">
-                (SNS 링크는 About.tsx의 SNS_LINKS 배열에서 추가하세요)
-              </span>
-            )}
+      {/* What I Do */}
+      <section className="services-section">
+        <h2 className="section-title">What I Do</h2>
+        {WHAT_I_DO.map((s) => (
+          <div key={s.num} className="service-item">
+            <h3><span>{s.num}</span>{s.title}</h3>
+            <p>{s.desc}</p>
           </div>
-        </section>
-      </div>
+        ))}
+      </section>
+
+      {/* Contact */}
+      <section className="contact-section">
+        <h2 className="section-title">Let's work together</h2>
+        <p>기준을 세우고 끝까지 마감하는 힘으로, 완성도 높은 서비스를 만들겠습니다.</p>
+        <a href="mailto:idowww11@gmail.com" className="contact-email">idowww11@gmail.com</a>
+        <div className="social-links">
+          <a href="https://linkedin.com/in/idowww" target="_blank" rel="noreferrer">LinkedIn — linkedin.com/in/idowww</a>
+          <a href="https://github.com/jiminihi" target="_blank" rel="noreferrer">GitHub — github.com/jiminihi</a>
+          <a href="https://behance.net/idowww" target="_blank" rel="noreferrer">Behance — behance.net/idowww</a>
+          <a href="https://instagram.com/idowww" target="_blank" rel="noreferrer">Instagram — @idowww</a>
+        </div>
+      </section>
+
     </div>
   );
 }
