@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 // ── 구글 시트 연동 ───────────────────────────────────────────────────────────
 const SHEET_ID   = "18a_8ZZu5eHhhkaWzc3hJcgYoxnqrQJkF9KJj8swslCM";
@@ -96,6 +97,7 @@ const WHAT_I_DO = [
 export default function About() {
   const [resume, setResume]   = useState<ResumeData | null>(null);
   const [loading, setLoading] = useState(true);
+  useScrollAnimation();
 
   useEffect(() => {
     fetchResumeFromSheet()
@@ -125,10 +127,10 @@ export default function About() {
 
       {/* Profile */}
       <section className="profile-section">
-        <div className="profile-image">
+        <div className="profile-image" data-reveal>
           <img src={PROFILE_PLACEHOLDER} alt="김주연 프로필" />
         </div>
-        <div className="profile-content">
+        <div className="profile-content" data-reveal data-delay="150">
           <h1>김주연</h1>
           <div className="role">UI/UX Designer &amp; Web Publisher</div>
           <div className="status">구직중</div>
@@ -143,10 +145,10 @@ export default function About() {
 
       {/* Skills */}
       <section className="skills-section">
-        <h2 className="section-title">Skills &amp; Expertise</h2>
+        <h2 className="section-title" data-reveal>Skills &amp; Expertise</h2>
         <div className="skills-grid">
-          {data.skills.map((sg) => (
-            <div key={sg.category} className="skill-column">
+          {data.skills.map((sg, i) => (
+            <div key={sg.category} className="skill-column" data-reveal data-delay={String(i * 100)}>
               <h3>{sg.category}</h3>
               <ul className="skill-list">
                 {sg.items.map((item) => <li key={item}>{item}</li>)}
@@ -158,9 +160,9 @@ export default function About() {
 
       {/* Experience */}
       <section className="experience-section">
-        <h2 className="section-title">Experience</h2>
+        <h2 className="section-title" data-reveal>Experience</h2>
         {sortedExp.map((e, idx) => (
-          <div key={`${e.company}-${idx}`} className="experience-item">
+          <div key={`${e.company}-${idx}`} className="experience-item" data-reveal data-delay={String(Math.min(idx * 80, 300))}>
             <div className="experience-date">{formatPeriod(e.start, e.end)}</div>
             <div className="experience-content">
               <h3>{e.role}</h3>
@@ -177,7 +179,7 @@ export default function About() {
       {/* Education & Certifications */}
       <section className="edu-cert-section">
         <div className="edu-cert-grid">
-          <div>
+          <div data-reveal>
             <h2 className="edu-sub-title">Education</h2>
             {data.education.map((ed, i) => (
               <div key={i} className="edu-item">
@@ -189,7 +191,7 @@ export default function About() {
               </div>
             ))}
           </div>
-          <div>
+          <div data-reveal data-delay="150">
             <h2 className="edu-sub-title">Certifications</h2>
             <ul className="cert-list">
               {CERTIFICATIONS.map((c, i) => (
@@ -208,9 +210,9 @@ export default function About() {
 
       {/* What I Do */}
       <section className="services-section">
-        <h2 className="section-title">What I Do</h2>
-        {WHAT_I_DO.map((s) => (
-          <div key={s.num} className="service-item">
+        <h2 className="section-title" data-reveal>What I Do</h2>
+        {WHAT_I_DO.map((s, i) => (
+          <div key={s.num} className="service-item" data-reveal data-delay={String(i * 100)}>
             <h3><span>{s.num}</span>{s.title}</h3>
             <p>{s.desc}</p>
           </div>
@@ -219,10 +221,10 @@ export default function About() {
 
       {/* Contact */}
       <section className="contact-section">
-        <h2 className="section-title">Let's work together</h2>
-        <p>기준을 세우고 끝까지 마감하는 힘으로, 완성도 높은 서비스를 만들겠습니다.</p>
-        <a href="mailto:idowww11@gmail.com" className="contact-email">idowww11@gmail.com</a>
-        <div className="social-links">
+        <h2 className="section-title" data-reveal>Let's work together</h2>
+        <p data-reveal data-delay="100">기준을 세우고 끝까지 마감하는 힘으로, 완성도 높은 서비스를 만들겠습니다.</p>
+        <a href="mailto:idowww11@gmail.com" className="contact-email" data-reveal data-delay="150">idowww11@gmail.com</a>
+        <div className="social-links" data-reveal data-delay="200">
           <a href="https://linkedin.com/in/idowww" target="_blank" rel="noreferrer">LinkedIn — linkedin.com/in/idowww</a>
           <a href="https://github.com/jiminihi" target="_blank" rel="noreferrer">GitHub — github.com/jiminihi</a>
           <a href="https://behance.net/idowww" target="_blank" rel="noreferrer">Behance — behance.net/idowww</a>

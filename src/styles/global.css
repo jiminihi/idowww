@@ -191,6 +191,17 @@ body {
   text-align: center;
 }
 .work-card:hover .work-overlay { opacity: 1; }
+
+/* 노이미지 카드: 오버레이 항상 표시, 호버 시 배경 진하게 */
+.work-card--no-image .work-overlay {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.55);
+}
+.work-card--no-image:hover .work-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+.work-card--no-image img { filter: grayscale(0%); }
+.work-card--no-image:hover img { transform: none; }
 .work-overlay-title { font-size: 28px; font-weight: 400; margin-bottom: 10px; }
 .work-overlay-meta  { font-size: 14px; color: var(--gray-light); margin-bottom: 12px; }
 .work-overlay-tags  { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
@@ -452,6 +463,28 @@ body {
 .detail-section li { position: relative; padding-left: 16px; margin-bottom: 10px; font-size: 15px; color: var(--gray-dark); }
 .detail-section li::before { content: "•"; position: absolute; left: 0; color: var(--gray-light); }
 .detail-links-wrap { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ── 스크롤 Reveal (AOS 스타일) ─────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+  will-change: opacity, transform;
+}
+
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* prefers-reduced-motion: 애니메이션 비활성화 */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 /* ── 애니메이션 ──────────────────────────────────────────────── */
 @keyframes fadeInUp {

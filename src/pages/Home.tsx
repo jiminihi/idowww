@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useProjectsData } from "../utils/useProjectsData";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import type { Project } from "../types/Project";
 
 const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
@@ -9,7 +10,8 @@ const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16
   </g>
 </svg>`;
 const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(SVG_PLACEHOLDER)}`;
-const withFallback = (src?: string) => (src && src.trim() ? src : PLACEHOLDER_THUMBNAIL);
+const hasImage = (src?: string) => !!(src && src.trim());
+const withFallback = (src?: string) => (hasImage(src) ? src! : PLACEHOLDER_THUMBNAIL);
 
 function getPeriodEndKey(period?: string): number {
   if (!period) return 0;
@@ -29,13 +31,14 @@ function getPeriodEndKey(period?: string): number {
 
 export default function Home() {
   const { projects, loading, error } = useProjectsData();
+  useScrollAnimation();
 
   const selectedProjects: Project[] =
     !loading && !error && projects
       ? projects
           .filter((p) => p.featured)
           .sort((a, b) => getPeriodEndKey(b.period) - getPeriodEndKey(a.period))
-          .slice(0, 3)
+          .slice(0, 4)
       : [];
 
   return (
@@ -51,7 +54,7 @@ export default function Home() {
 
       {/* Selected Works */}
       <section className="featured-works">
-        <h2 className="section-title">Selected Works</h2>
+        <h2 className="section-title" data-reveal>Selected Works</h2>
 
         {loading && (
           <div className="works-grid">
@@ -69,13 +72,13 @@ export default function Home() {
 
         {!loading && !error && selectedProjects.length > 0 && (
           <div className="works-grid">
-            {selectedProjects.map((p) => {
+            {selectedProjects.map((p, i) => {
               const roleChips = Array.from(
                 new Set((p.role ?? "").split(",").map((s) => s.trim()).filter(Boolean))
               );
               return (
                 <Link key={p.slug} to={`/projects/${p.slug}`} style={{ textDecoration: "none" }}>
-                  <article className="work-card">
+                  <article className={`work-card${hasImage(p.thumbnail) ? "" : " work-card--no-image"}`} data-reveal data-delay={String(i * 100)}>
                     <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" />
                     <div className="work-overlay">
                       <div className="work-overlay-title">{p.title}</div>
@@ -96,19 +99,21 @@ export default function Home() {
 
       {/* Brief Introduction */}
       <section className="brief-intro">
-        <h2 className="section-title">Hello, I'm idoWWW</h2>
-        <p>
+        <h2 className="section-title" data-reveal>Hello, I'm idoWWW</h2>
+        <p data-reveal data-delay="100">
           디자이너와 개발자 사이, 의도를 기술 언어로 정리해 프로젝트를 완성하는 20년 경력의 웹 하는 사람입니다.<br/> 
           기준을 세우고 실행합니다.
         </p>
-        <Link to="/about" className="btn">More About Me →</Link>
+        <div data-reveal data-delay="200">
+          <Link to="/about" className="btn">More About Me →</Link>
+        </div>
       </section>
 
       {/* Contact */}
       <section className="contact-section">
-        <h2 className="section-title">Let's work together</h2>
-        <a href="mailto:idowww11@gmail.com" className="contact-email">idowww11@gmail.com</a>
-        <div className="social-links">
+        <h2 className="section-title" data-reveal>Let's work together</h2>
+        <a href="mailto:idowww11@gmail.com" className="contact-email" data-reveal data-delay="100">idowww11@gmail.com</a>
+        <div className="social-links" data-reveal data-delay="200">
           <a href="https://linkedin.com/in/idowww" target="_blank" rel="noreferrer">LinkedIn</a>
           <a href="https://github.com/jiminihi" target="_blank" rel="noreferrer">GitHub</a>
           <a href="https://behance.net/idowww" target="_blank" rel="noreferrer">Behance</a>

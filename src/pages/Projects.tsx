@@ -5,6 +5,7 @@ import { useProjectsData } from "../utils/useProjectsData";
 import { RoleTabs } from "../components/RoleTabs";
 import type { RoleKey } from "../components/RoleTabs";
 import type { Project } from "../types/Project";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
   <rect width="100%" height="100%" fill="#FAFAFA"/>
@@ -13,8 +14,11 @@ const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16
   </g>
 </svg>`;
 const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(SVG_PLACEHOLDER)}`;
-const withFallback = (src?: string) => (src && src.trim() ? src : PLACEHOLDER_THUMBNAIL);
+const hasImage = (src?: string) => !!(src && src.trim());
+const withFallback = (src?: string) => (hasImage(src) ? src! : PLACEHOLDER_THUMBNAIL);
 const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const card = e.currentTarget.closest(".work-card");
+  if (card) card.classList.add("work-card--no-image");
   if (e.currentTarget.src !== PLACEHOLDER_THUMBNAIL) e.currentTarget.src = PLACEHOLDER_THUMBNAIL;
 };
 
@@ -61,6 +65,7 @@ export default function Projects() {
   const { projects, loading, error } = useProjectsData();
   const location = useLocation();
   const navigate = useNavigate();
+  useScrollAnimation();
 
   const initialRole = (new URLSearchParams(location.search).get("role") as RoleKey) || "ALL";
   const [role, setRole] = useState<RoleKey>(initialRole);
@@ -149,9 +154,9 @@ export default function Projects() {
       {/* 카드 뷰 */}
       {view === "card" && (
         <div className="works-grid">
-          {filtered.map((p) => (
+          {filtered.map((p, i) => (
             <Link key={p.slug} to={`/projects/${p.slug}`} style={{ textDecoration: "none" }}>
-              <article className="work-card">
+              <article className={`work-card${hasImage(p.thumbnail) ? "" : " work-card--no-image"}`} data-reveal data-delay={String(Math.min(i % 3 * 100, 200))}>
                 <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" onError={onImgError} />
                 <div className="work-overlay">
                   <div className="work-overlay-title">{p.title}</div>
@@ -170,7 +175,7 @@ export default function Projects() {
 
       {/* 테이블 뷰 */}
       {view === "table" && (
-        <div className="works-table-wrap">
+        <div className="works-table-wrap" data-reveal>
           <table className="works-table">
             <thead>
               <tr>
