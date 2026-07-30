@@ -431,6 +431,8 @@ body {
   font-weight: 500; transition: opacity 0.2s ease;
 }
 .works-table .name-cell a:hover { opacity: 0.5; }
+.table-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.table-tag  { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; background: var(--off-white, #F5F5F5); color: var(--gray-dark, #555); white-space: nowrap; }
 
 /* ── PROJECT DETAIL ──────────────────────────────────────────── */
 .detail-page { max-width: 1400px; margin: 0 auto; padding: 120px 60px; }

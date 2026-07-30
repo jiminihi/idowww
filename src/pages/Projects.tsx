@@ -175,15 +175,16 @@ export default function Projects() {
 
       {/* 테이블 뷰 */}
       {view === "table" && (
-        <div className="works-table-wrap" data-reveal>
+        <div className="works-table-wrap">
           <table className="works-table">
             <thead>
               <tr>
-                <th style={{ width: "18%" }}>기간</th>
-                <th style={{ width: "34%" }}>프로젝트명</th>
-                <th style={{ width: "18%" }}>고객사</th>
-                <th style={{ width: "18%" }}>근무사</th>
+                <th style={{ width: "14%" }}>기간</th>
+                <th style={{ width: "26%" }}>프로젝트명</th>
+                <th style={{ width: "14%" }}>고객사</th>
+                <th style={{ width: "14%" }}>근무사</th>
                 <th style={{ width: "12%" }}>역할</th>
+                <th style={{ width: "20%" }}>기술내역</th>
               </tr>
             </thead>
             <tbody>
@@ -195,7 +196,12 @@ export default function Projects() {
                   </td>
                   <td>{p.client || ""}</td>
                   <td>{p.affiliation || ""}</td>
-                  <td>{p.role}</td>
+                  <td style={{ fontSize: "12px" }}>
+                    {p.role.split(",").map((r) => (
+                      <span key={r} style={{ display: "inline-block" }}>{r.trim()}</span>
+                    ))}
+                  </td>
+                  <td style={{ fontSize: "12px" }}>{p.parsedTags.join(", ")}</td>
                 </tr>
               ))}
             </tbody>
