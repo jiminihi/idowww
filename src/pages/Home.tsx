@@ -2,16 +2,7 @@ import { Link } from "react-router-dom";
 import { useProjectsData } from "../utils/useProjectsData";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import type { Project } from "../types/Project";
-
-const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
-  <rect width="100%" height="100%" fill="#FAFAFA"/>
-  <g font-family="system-ui" font-size="56" fill="#999999">
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">No Image</text>
-  </g>
-</svg>`;
-const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(SVG_PLACEHOLDER)}`;
-const hasImage = (src?: string) => !!(src && src.trim());
-const withFallback = (src?: string) => (hasImage(src) ? src! : PLACEHOLDER_THUMBNAIL);
+import { hasImage, withFallback, onImgError } from "../utils/placeholderThumbnail";
 
 function getPeriodEndKey(period?: string): number {
   if (!period) return 0;
@@ -79,7 +70,7 @@ export default function Home() {
               return (
                 <Link key={p.slug} to={`/projects/${p.slug}`} style={{ textDecoration: "none" }}>
                   <article className={`work-card${hasImage(p.thumbnail) ? "" : " work-card--no-image"}`} data-reveal data-delay={String(i * 100)}>
-                    <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" />
+                    <img src={withFallback(p.thumbnail)} alt={p.title} loading="lazy" onError={onImgError} />
                     <div className="work-overlay">
                       <div className="work-overlay-title">{p.title}</div>
                       <div className="work-overlay-meta">{p.period}</div>

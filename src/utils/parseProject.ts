@@ -1,10 +1,15 @@
 import type { Project, ProjectRaw } from "../types/Project";
 
-/** "label::https://..." 또는 "https://..." 형태 파싱 */
+// 구글시트 셀에 여러 값이 들어갈 때 쓰이는 구분자들:
+// 쉼표(,) 뿐 아니라 줄바꿈(Alt+Enter)이나 세미콜론(;)으로 나눠 입력하는 경우도 있어
+// 한 항목으로 뭉쳐 보이지 않도록 셋 다 구분자로 처리한다.
+const MULTI_VALUE_SPLIT = /[,\n;]+/;
+
+/** "label::https://..." 또는 "https://..." 형태 파싱 (쉼표/줄바꿈/세미콜론 구분) */
 function parseUrls(raw?: string): { label: string; href: string }[] {
   if (!raw?.trim()) return [];
   return raw
-    .split(",")
+    .split(MULTI_VALUE_SPLIT)
     .map((s) => s.trim())
     .filter(Boolean)
     .map((item) => {
@@ -17,12 +22,12 @@ function parseUrls(raw?: string): { label: string; href: string }[] {
     .filter((u) => u.href && u.href !== "#");
 }
 
-/** 쉼표 구분 문자열 → 배열
+/** 쉼표/줄바꿈/세미콜론 구분 문자열 → 배열
  *  stripHash: true → 구글시트 tags의 # 기호 제거 */
 function splitComma(raw?: string, stripHash = false): string[] {
   if (!raw?.trim()) return [];
   return raw
-    .split(",")
+    .split(MULTI_VALUE_SPLIT)
     .map((s) => (stripHash ? s.replace(/#/g, "").trim() : s.trim()))
     .filter(Boolean);
 }

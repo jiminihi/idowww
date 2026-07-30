@@ -11,12 +11,12 @@ export interface ProjectRaw {
   client?: string;
   affiliation?: string;
   role?: string;        // 쉼표 구분 문자열 "UI/UX Design, Publishing"
-  tags?: string;        // 쉼표 구분 문자열
+  tags?: string;        // 쉼표/줄바꿈/세미콜론 구분 문자열
   thumbnail?: string;
   description?: string;
   impact?: string;
-  awards?: string;      // 쉼표 구분 문자열
-  urls?: string;        // "label::href" 쉼표 구분
+  awards?: string;      // 쉼표/줄바꿈/세미콜론 구분 문자열
+  urls?: string;        // "label::href" 쉼표/줄바꿈/세미콜론 구분 (예: "사이트::https://a.com, 깃허브::https://b.com")
   featured?: boolean | string; // "TRUE"/"FALSE" 또는 boolean
 }
 

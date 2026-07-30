@@ -1,26 +1,11 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState, useEffect } from "react";
-import type React from "react";
 import { useProjectsData } from "../utils/useProjectsData";
 import { RoleTabs } from "../components/RoleTabs";
 import type { RoleKey } from "../components/RoleTabs";
 import type { Project } from "../types/Project";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
-
-const SVG_PLACEHOLDER = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
-  <rect width="100%" height="100%" fill="#FAFAFA"/>
-  <g font-family="system-ui" font-size="56" fill="#999999">
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">No Image</text>
-  </g>
-</svg>`;
-const PLACEHOLDER_THUMBNAIL = `data:image/svg+xml;utf8,${encodeURIComponent(SVG_PLACEHOLDER)}`;
-const hasImage = (src?: string) => !!(src && src.trim());
-const withFallback = (src?: string) => (hasImage(src) ? src! : PLACEHOLDER_THUMBNAIL);
-const onImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-  const card = e.currentTarget.closest(".work-card");
-  if (card) card.classList.add("work-card--no-image");
-  if (e.currentTarget.src !== PLACEHOLDER_THUMBNAIL) e.currentTarget.src = PLACEHOLDER_THUMBNAIL;
-};
+import { hasImage, withFallback, onImgError } from "../utils/placeholderThumbnail";
 
 const IconGrid = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="18" height="18">

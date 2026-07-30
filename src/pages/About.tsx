@@ -76,8 +76,8 @@ const FALLBACK: ResumeData = {
   ],
 };
 
-const PROFILE_PLACEHOLDER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23FAFAFA' width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23999' font-family='Arial' font-size='20'%3EProfile Image%3C/text%3E%3C/svg%3E";
+// public/images/profile.jpg — 400x500(4:5), 여니가 준 일러스트에서 사람+모니터가 보이게 크롭
+const PROFILE_PLACEHOLDER = "/images/profile.jpg";
 
 const CERTIFICATIONS = [
   { name: "웹디자인기능사",    org: "산업인력관리공단", date: "2006.12.29" },
